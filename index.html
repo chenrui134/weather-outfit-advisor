@@ -430,11 +430,11 @@
         .forecast-card.active .forecast-details {
             color: rgba(255, 255, 255, 0.8);
         }
-
+        
         /* 响应式设计 */
         @media (max-width: 768px) {
             .weather-info {
-                flex-direction: column;
+            flex-direction: column;
             }
 
             .current-weather {
@@ -504,7 +504,7 @@
             margin: 0;
         }
 
-        .outfit-item {
+            .outfit-item {
             display: flex;
             align-items: center;
             padding: 8px 0;
@@ -939,6 +939,124 @@
             background: #fff;
             transform: scale(1.2);
         }
+
+        .weather-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 400px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        #city-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .search-form button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .search-form button:hover {
+            background: #45a049;
+        }
+        
+        .weather-info {
+            text-align: center;
+        }
+        
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .temperature {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .weather-description {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* 天气容器样式 */
+        .weather-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        #city-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-form button:hover {
+            background-color: #45a049;
+        }
+
+        .weather-info {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .temperature {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .weather-description {
+            font-size: 1.2em;
+            color: #666;
+        }
     </style>
 
     <!-- 预加载关键资源 -->
@@ -951,6 +1069,18 @@
     </div>
 
     <div class="container">
+        <h1>天气穿搭建议</h1>
+        <div class="weather-container">
+            <form id="city-search-form" class="search-form">
+                <input type="text" id="city-input" placeholder="输入城市名称..." required>
+                <button type="submit">搜索</button>
+            </form>
+            <div class="weather-info">
+                <img class="weather-icon" src="" alt="天气图标">
+                <div class="temperature"></div>
+                <div class="weather-description"></div>
+            </div>
+        </div>
         <div class="language-switch">
             <button class="language-btn" onclick="toggleLanguageList()">
                 <span class="globe-icon">🌐</span>
@@ -2093,42 +2223,17 @@
         }
 
         // 优化天气数据获取
-        async function getWeatherData(lat, lon, lang) {
-            // 检查缓存
-            const cachedData = WeatherCache.get(lat, lon);
-            if (cachedData) {
-                requestAnimationFrame(() => {
-                    showWeatherInfo(cachedData, 0, lang);
-                    generateOutfitRecommendations(cachedData, 0, lang);
-                });
-                return;
-            }
-            
+        async function getWeatherData(lat, lon, lang = 'zh_cn') {
             try {
-                const weatherUrl = `${OPEN_METEO_API.WEATHER}/forecast?latitude=${lat}&longitude=${lon}`
-                    + `&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m`
-                    + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
-                    + `&current_weather=true&timezone=auto&forecast_days=7`;
-
-                const response = await fetchWithRetry(weatherUrl);
-                if (!response.ok) throw new Error(`API Error: ${response.status}`);
-
-                const data = await response.json();
-                if (!data || !data.current_weather || !data.daily || !data.hourly) {
-                    throw new Error('Invalid data structure');
+                const response = await fetch(`/api/getWeather?lat=${lat}&lon=${lon}&lang=${lang}`);
+                if (!response.ok) {
+                    throw new Error('Weather data fetch failed');
                 }
-
-                const weatherData = processWeatherData(data, lang);
-                WeatherCache.set(lat, lon, weatherData);
-
-                requestAnimationFrame(() => {
-                    showWeatherInfo(weatherData, 0, lang);
-                    generateOutfitRecommendations(weatherData, 0, lang);
-                });
-
-                startAutoRefresh();
-        } catch (error) {
-                handleWeatherError(error, lang);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('获取天气数据失败:', error);
+                throw error;
             }
         }
 
@@ -3082,6 +3187,55 @@
                 container.scrollLeft = scrollLeft - walk;
             });
         });
+
+        // OpenWeatherMap API configuration
+        const API_KEY = 'YOUR_API_KEY'; // 请替换为您的 API key
+        const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
+
+        // DOM 元素
+        const searchForm = document.querySelector('.search-form');
+        const cityInput = document.querySelector('#city-input');
+        const weatherInfo = document.querySelector('.weather-info');
+        const weatherIcon = document.querySelector('.weather-icon');
+        const temperature = document.querySelector('.temperature');
+        const weatherDescription = document.querySelector('.weather-description');
+
+        // 监听表单提交事件
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const city = cityInput.value.trim();
+            
+            if (city) {
+                try {
+                    const weatherData = await getWeatherData(city);
+                    displayWeatherInfo(weatherData);
+                } catch (error) {
+                    alert('获取天气信息失败，请检查城市名称是否正确。');
+                    console.error('Error:', error);
+                }
+            }
+        });
+
+        // 获取天气数据
+        async function getWeatherData(city) {
+            const response = await fetch(`${API_URL}?q=${city}&appid=${API_KEY}&units=metric&lang=zh_cn`);
+            if (!response.ok) {
+                throw new Error('Weather data fetch failed');
+            }
+            return await response.json();
+        }
+
+        // 显示天气信息
+        function displayWeatherInfo(data) {
+            const iconCode = data.weather[0].icon;
+            const iconUrl = `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+            
+            weatherIcon.src = iconUrl;
+            temperature.textContent = `${Math.round(data.main.temp)}°C`;
+            weatherDescription.textContent = data.weather[0].description;
+            
+            weatherInfo.style.display = 'block';
+        }
     </script>
 </body>
 </html>
