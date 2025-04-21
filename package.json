@@ -1,0 +1,16 @@
+{
+  "name": "weather-outfit-advisor",
+  "version": "1.0.0",
+  "description": "A weather-based outfit recommendation website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^1.6.0",
+    "netlify-cli": "^12.0.0"
+  }
+} 
