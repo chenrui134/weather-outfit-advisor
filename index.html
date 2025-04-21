@@ -3,84 +3,3085 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>天气穿搭建议</title>
+    <title>Travel Outfit Advisor | 旅行穿搭助手</title>
     <style>
+        /* 基础样式 */
         body {
-            font-family: Arial, sans-serif;
+            visibility: hidden;
             margin: 0;
             padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -.022em;
+            font-size: 15.75px; /* 原始 15px 增加 5% */
+        }
+
+        /* 容器样式调整 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;  /* 增加上下内边距 */
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        /* 语言切换按钮位置调整 */
+        .language-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin: 0;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #0071e3;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            font-weight: 500;
+            min-width: 100px;
+            justify-content: space-between;
+        }
+
+        .language-btn:hover {
+            background: #0077ed;
+        }
+
+        .language-btn::after {
+            content: '▼';
+            font-size: 10.5px; /* 原始 10px 增加 5% */
+            transition: transform 0.3s ease;
+        }
+
+        .language-btn.active::after {
+            transform: rotate(180deg);
+        }
+
+        .language-list {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            background: #fff;
+            border-radius: 6px;
+            padding: 4px;
+            display: none;
+            z-index: 1000;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .language-list.show {
+            display: block;
+        }
+
+        .language-option {
+            padding: 8px 12px;
+            color: #1d1d1f;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .language-option:hover {
+            background: #f5f5f7;
+        }
+
+        .language-option.selected {
+            background: #0071e3;
+            color: #fff;
+        }
+
+        /* 主标题和说明文字样式调整 */
+        .app-title {
+            font-size: 35.28px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin: 0 0 16px;  /* 调整底部间距 */
+            text-align: center;
+            padding-top: 20px;  /* 增加顶部间距 */
+        }
+
+        .app-subtitle {
+            text-align: center;
+            color: #1d1d1f;
+            margin: 0 0 8px;  /* 调整行间距 */
+            font-size: 15.75px;
+        }
+
+        .app-instruction {
+            text-align: center;
+            color: #86868b;
+            margin: 0 0 40px;  /* 增加与下方内容的间距 */
+            font-size: 14.7px;
+        }
+
+        /* 主内容区域调整 */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0;  /* 移除内边距 */
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .main-content {
+            padding: 20px;  /* 添加内边距 */
+        }
+
+        /* 导航区域 */
+        .navigation {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .nav-section {
+            position: relative;
+            flex: 1;
+        }
+
+        .nav-title {
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            font-weight: 500;
+            color: #1d1d1f;
+            padding: 8px 12px;
+            background: #f5f5f7;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            white-space: nowrap;
+        }
+
+        .nav-title::after {
+            content: '▼';
+            font-size: 10.5px; /* 原始 10px 增加 5% */
+            color: #86868b;
+            transition: transform 0.3s ease;
+            margin-left: 6px;
+        }
+
+        .nav-title.active::after {
+            transform: rotate(180deg);
+        }
+
+        .nav-title:hover {
+            background: #e5e5e7;
+        }
+
+        .nav-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px;
+            margin-top: 8px;
+            z-index: 10;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            min-width: 160px;
+        }
+
+        .nav-list.active {
+            display: block;
+        }
+
+        .nav-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: #f5f5f7;
+        }
+
+        .nav-item.selected {
+            background: #0071e3;
+            color: white;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d2d2d7;
+            border-radius: 6px;
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            background: #f5f5f7;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #0071e3;
+            background: white;
+        }
+
+        /* 天气信息 */
+        .weather-info {
+            background: white;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 24px;
+        }
+
+        .current-weather {
+            text-align: center;
+            flex: 0 0 200px;
+            padding: 20px;
+            background: #f5f5f7;
+            border-radius: 12px;
+        }
+
+        .current-temp {
+            font-size: 37.8px; /* 原始 36px 增加 5% */
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .current-details {
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            color: #1d1d1f;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .last-update {
+            font-size: 12.6px; /* 原始 12px 增加 5% */
+            color: #86868b;
+        }
+
+        /* 天气预报卡片容器 */
+        .forecast-wrapper {
+            position: relative;
+            flex: 1;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .forecast-scroll {
+            display: flex;
+            gap: 12px;
+            transition: transform 0.3s ease;
+            padding: 0 32px;
+            width: calc(175% + 24px); /* 调整为可以容纳7张卡片的宽度 */
+        }
+
+        /* 天气预报卡片 */
+        .forecast-card {
+            flex: 0 0 calc(14.28% - 10.3px);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f2f5;
+            gap: 8px;
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .search-container {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 300px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
+        .forecast-card.active {
+            background: #0071e3;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.2);
         }
 
-        button:hover {
-            background-color: #45a049;
+        .forecast-weather-data {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 0.9rem;
+            color: #666;
         }
 
-        .weather-info {
-            text-align: center;
-            margin-top: 20px;
+        .forecast-card.active .forecast-weather-data {
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .weather-icon {
-            width: 100px;
-            height: 100px;
-            margin: 10px 0;
+            font-size: 1.4rem;
+            margin: 8px 0;
         }
 
-        .temperature {
-            font-size: 24px;
-            margin: 10px 0;
+        /* 导航按钮 */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 100%;
+            border: none;
+            background: rgba(0, 0, 0, 0.03);
+            color: #1d1d1f;
+            font-size: 16.8px; /* 原始 16px 增加 5% */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.2s ease;
         }
 
-        .weather-description {
-            font-size: 18px;
+        .nav-arrow:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-arrow.prev {
+            left: 0;
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        .nav-arrow.next {
+            right: 0;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .nav-arrow.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-arrow::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-style: solid;
+            border-width: 2px 2px 0 0;
+            display: inline-block;
+            position: relative;
+            transform: rotate(-135deg);
+            transition: transform 0.2s ease;
+        }
+
+        .nav-arrow.next::before {
+            transform: rotate(45deg);
+        }
+
+        .forecast-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .forecast-date {
+            font-size: 12.6px; /* 原始 12px 增加 5% */
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #86868b;
+        }
+
+        .forecast-weather {
+            font-size: 21px; /* 原始 20px 增加 5% */
+            margin: 6px 0;
+        }
+
+        .forecast-temp {
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            margin: 6px 0;
+            font-weight: 500;
+        }
+
+        .forecast-details {
+            font-size: 11.55px; /* 原始 11px 增加 5% */
+            color: #86868b;
+            line-height: 1.4;
+        }
+
+        .forecast-card.active .forecast-date,
+        .forecast-card.active .forecast-details {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .weather-info {
+                flex-direction: column;
+            }
+
+            .current-weather {
+                flex: none;
+                width: 100%;
+            }
+
+            .forecast-scroll {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 穿搭建议 */
+        .outfit-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 2rem;
+            padding: 20px;
+            gap: 2rem;
+        }
+
+        .outfit-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 12px;
+        }
+
+        .outfit-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .outfit-icon {
+            font-size: 1.8rem;
+            margin-right: 12px;
+        }
+
+        .outfit-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .outfit-temp {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #0071e3;
+            margin-bottom: 16px;
+        }
+
+        .outfit-temp-icon {
+            margin-right: 8px;
+        }
+
+        .outfit-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .outfit-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .outfit-item:last-child {
+            border-bottom: none;
+        }
+
+        .outfit-item-icon {
+            margin-right: 12px;
             color: #666;
         }
+
+        /* 添加响应式布局 */
+        @media (max-width: 1024px) {
+            .outfit-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .outfit-card {
+                width: 90%;
+                max-width: 300px;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* 确保内容在页面底部 */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* 穿搭推荐容器的新样式 */
+        #outfit-recommendations {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* 错误信息 */
+        .error-message {
+            text-align: center;
+            padding: 20px;
+            background: #fff3f3;
+            border-radius: 12px;
+            color: #ff3b30;
+            font-size: 14.7px; /* 原始 14px 增加 5% */
+            margin-top: 20px;
+        }
+
+        /* 加载指示器 */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0071e3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 动画效果 */
+        .nav-item, .outfit-card, .forecast-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .nav-item:active, .outfit-card:active, .forecast-card:active {
+            transform: scale(0.98);
+        }
+
+        /* 日期导航样式 */
+        .calendar-wrapper {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-top: 8px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .calendar-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            padding: 4px 8px;
+            cursor: pointer;
+            color: #0071e3;
+            border-radius: 6px;
+        }
+
+        .calendar-nav button:hover {
+            background: #f5f5f7;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .calendar-weekday {
+            font-size: 12px;
+            color: #86868b;
+            padding: 4px;
+            font-weight: 500;
+        }
+
+        .calendar-day {
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .calendar-day:hover {
+            background: #f5f5f7;
+        }
+
+        .calendar-day.active {
+            background: #0071e3;
+            color: white;
+        }
+
+        .calendar-day.today {
+            font-weight: 600;
+        }
+
+        .calendar-day.has-weather::after {
+            content: '•';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #0071e3;
+            font-size: 12px;
+        }
+
+        .calendar-day.active.has-weather::after {
+            color: white;
+        }
+
+        .calendar-day.disabled {
+            color: #d2d2d7;
+            cursor: not-allowed;
+        }
+
+        .outfit-content {
+            margin-top: 1rem;
+            text-align: left;
+        }
+
+        .outfit-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .outfit-content li {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .outfit-content li:last-child {
+            border-bottom: none;
+        }
+
+        .outfit-content i {
+            margin-right: 12px;
+            color: #0071e3;
+        }
+
+        #outfit-recommendations {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 2rem;
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 1024px) {
+            #outfit-recommendations {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .outfit-card {
+                width: 90%;
+                max-width: 300px;
+                margin: 1rem 0;
+            }
+        }
+
+        /* 添加用户评价区域的样式 */
+        .testimonials-section {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .testimonials-header {
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+
+        .testimonials-title {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .testimonials-title span {
+            color: #fff;
+        }
+
+        .testimonials-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .testimonials-container {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 20px 40px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -40px;
+        }
+
+        .testimonial-card {
+            flex: 0 0 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 32px;
+            scroll-snap-align: start;
+            transition: all 0.3s ease;
+            text-align: left;
+            backdrop-filter: blur(10px);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin-right: 16px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .testimonial-position {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .testimonial-stars {
+            display: flex;
+            gap: 4px;
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.85);
+            font-style: italic;
+        }
+
+        /* 自定义滚动条 */
+        .testimonials-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .testimonials-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        .testimonials-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .testimonials-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-title {
+                font-size: 2.2rem;
+            }
+
+            .testimonial-card {
+                flex: 0 0 300px;
+                padding: 24px;
+            }
+        }
+
+        /* 添加导航按钮样式 */
+        .testimonials-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .testimonials-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonials-nav.prev {
+            left: 20px;
+        }
+
+        .testimonials-nav.next {
+            right: 20px;
+        }
+
+        /* 默认用户头像样式 */
+        .testimonial-avatar {
+            background: #2c2c2c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        /* 添加指示器样式 */
+        .testimonials-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #fff;
+            transform: scale(1.2);
+        }
     </style>
+
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://api.open-meteo.com">
 </head>
 <body>
-    <h1>天气穿搭建议</h1>
-    <div class="search-container">
-        <input type="text" id="city-input" placeholder="输入城市名称" value="北京">
-        <button onclick="searchWeather()">搜索</button>
+    <!-- 添加加载指示器 -->
+    <div id="loading-indicator" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
+        <div class="spinner"></div>
     </div>
-    <div class="weather-info">
-        <img src="" alt="天气图标" class="weather-icon">
-        <div class="temperature"></div>
-        <div class="weather-description"></div>
+
+    <div class="container">
+        <div class="language-switch">
+            <button class="language-btn" onclick="toggleLanguageList()">
+                <span class="globe-icon">🌐</span>
+                <span class="current-lang">English</span>
+            </button>
+            <div class="language-list" id="languageList">
+                <div class="language-option selected" onclick="switchLanguage('en')">English</div>
+                <div class="language-option" onclick="switchLanguage('zh')">简体中文</div>
+                <div class="language-option" onclick="switchLanguage('zh-TW')">繁體中文</div>
+                <div class="language-option" onclick="switchLanguage('ja')">日本語</div>
+                <div class="language-option" onclick="switchLanguage('ko')">한국어</div>
+                <div class="language-option" onclick="switchLanguage('de')">Deutsch</div>
+                <div class="language-option" onclick="switchLanguage('fr')">Français</div>
+                <div class="language-option" onclick="switchLanguage('it')">Italiano</div>
+                <div class="language-option" onclick="switchLanguage('es')">Español</div>
+                <div class="language-option" onclick="switchLanguage('pt')">Português</div>
+                <div class="language-option" onclick="switchLanguage('hi')">हिंदी</div>
     </div>
+        </div>
+        <div class="app-container">
+            <h1 class="app-title">最好的天气穿衣指南</h1>
+            <p class="app-subtitle">几秒内将生成令人惊叹的AI推荐穿搭</p>
+            <p class="app-instruction">直接在下方选择/输入国家，城市，日期</p>
+            
+            <div class="main-content">
+                <div class="navigation">
+                    <div class="nav-section">
+                        <div class="nav-title" id="country-title">
+                            <span class="nav-text">Select Country</span>
+                        </div>
+                        <div class="nav-list" id="country-list">
+                            <input type="text" class="search-box" placeholder="Search country..." onkeyup="filterList(this, 'country-list')">
+                            <div class="nav-items"></div>
+                        </div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-title" id="city-title">
+                            <span class="nav-text">Select City</span>
+                        </div>
+                        <div class="nav-list" id="city-list">
+                            <input type="text" class="search-box" placeholder="Search city..." onkeyup="filterList(this, 'city-list')">
+                            <div class="nav-items"></div>
+                        </div>
+                    </div>
+                    <div class="nav-section">
+                        <div class="nav-title" id="date-title">
+                            <span class="nav-text">Select Date</span>
+                        </div>
+                        <div class="nav-list" id="date-list">
+                            <div class="nav-items"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="weather-info" class="weather-info">
+                    <div id="current-weather" class="current-weather"></div>
+                    <div id="forecast-container" class="forecast-wrapper"></div>
+                </div>
+            </div>
+
+            <div id="outfit-recommendations" class="outfit-container"></div>
+        </div>
+    </div>
+
+    <style>
+        /* 非阻塞CSS */
+        /* 添加你的其他CSS样式 */
+    </style>
+
+    <script>
+        // 性能优化配置
+        const PERFORMANCE_CONFIG = {
+            CACHE_DURATION: 15 * 60 * 1000, // 15分钟缓存
+            REQUEST_TIMEOUT: 10000, // 10秒超时
+            AUTO_REFRESH_INTERVAL: 15 * 60 * 1000, // 15分钟自动刷新
+            MAX_RETRY_ATTEMPTS: 3
+        };
+
+        // 初始化性能监控
+        const performance = {
+            timing: {},
+            mark(name) {
+                this.timing[name] = Date.now();
+            },
+            measure(start, end) {
+                if (this.timing[start] && this.timing[end]) {
+                    return this.timing[end] - this.timing[start];
+                }
+                return 0;
+            }
+        };
+
+        // 页面加载优化
+        document.addEventListener('DOMContentLoaded', () => {
+            performance.mark('domReady');
+            
+            // 立即显示页面框架
+            requestAnimationFrame(() => {
+                document.body.style.visibility = 'visible';
+            });
+            
+            // 延迟加载非关键资源
+            setTimeout(() => {
+                initializeApp();
+            }, 0);
+
+            // 添加导航标题点击事件
+            const titles = document.querySelectorAll('.nav-title');
+            titles.forEach(title => {
+                title.addEventListener('click', () => {
+                    const list = title.parentElement.querySelector('.nav-list');
+                    const isActive = list.classList.contains('active');
+                    
+                    // 关闭所有其他打开的列表
+                    document.querySelectorAll('.nav-list').forEach(otherList => {
+                        if (otherList !== list) {
+                            otherList.classList.remove('active');
+                            otherList.parentElement.querySelector('.nav-title').classList.remove('active');
+                        }
+                    });
+                    
+                    // 切换当前列表
+                    list.classList.toggle('active');
+                    title.classList.toggle('active');
+                });
+            });
+
+            // 点击外部关闭所有下拉列表
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-section')) {
+                    document.querySelectorAll('.nav-list').forEach(list => {
+                        list.classList.remove('active');
+                        list.parentElement.querySelector('.nav-title').classList.remove('active');
+                    });
+                }
+            });
+
+            // 页面加载时初始化为英语
+            currentLang = 'en';
+            localStorage.setItem('preferred_language', 'en');
+            
+            // 更新界面文本
+            updateInterfaceText('en');
+            
+            // 更新语言按钮状态
+            const currentLangSpan = document.querySelector('.current-lang');
+            if (currentLangSpan) {
+                currentLangSpan.textContent = 'English';
+            }
+
+            // 更新选中状态
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.toggle('selected', option.textContent === 'English');
+            });
+
+            // 更新页面标题
+            document.querySelector('.app-title').textContent = '🌍 Travel Outfit Advisor';
+
+            // 更新导航文本
+            document.querySelector('#country-title .nav-text').textContent = 'Select Country';
+            document.querySelector('#city-title .nav-text').textContent = 'Select City';
+            document.querySelector('#date-title .nav-text').textContent = 'Select Date';
+
+            // 更新搜索框占位符
+            const countrySearch = document.querySelector('#country-list .search-box');
+            const citySearch = document.querySelector('#city-list .search-box');
+            if (countrySearch) countrySearch.placeholder = 'Search country...';
+            if (citySearch) citySearch.placeholder = 'Search city...';
+
+            // 渲染国家列表
+            renderCountryList('en');
+        });
+
+        // 优化初始化过程
+        function initializeApp() {
+            performance.mark('appInit');
+
+            // 加载最近访问的城市
+            try {
+                const recentCities = JSON.parse(localStorage.getItem('recentCities')) || [];
+                if (recentCities.length > 0) {
+                    const city = recentCities[0];
+                    if (city.lat && city.lon) {
+                        getWeatherData(city.lat, city.lon, currentLang);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading recent cities:', error);
+            }
+
+            performance.mark('appInitEnd');
+            console.log('App initialization time:', performance.measure('appInit', 'appInitEnd'), 'ms');
+        }
+
+        // 优化数据请求
+        async function fetchWithRetry(url, options = {}, retryCount = 0) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), PERFORMANCE_CONFIG.REQUEST_TIMEOUT);
+
+                const response = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId);
+                return response;
+            } catch (error) {
+                if (retryCount < PERFORMANCE_CONFIG.MAX_RETRY_ATTEMPTS) {
+                    // 指数退避重试
+                    const delay = Math.min(1000 * Math.pow(2, retryCount), 5000);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithRetry(url, options, retryCount + 1);
+                }
+                throw error;
+            }
+        }
+
+        // 初始化加载状态管理
+        const loadingStates = {
+            LOADING: 'loading',
+            READY: 'ready',
+            ERROR: 'error'
+        };
+
+        let pageState = loadingStates.LOADING;
+
+        // 显示/隐藏加载指示器
+        function toggleLoading(show) {
+            const loader = document.getElementById('loading-indicator');
+            if (loader) {
+                loader.style.display = show ? 'block' : 'none';
+            }
+        }
+
+        // 延迟加载非关键资源
+        function loadNonCriticalResources() {
+            // 初始化应用
+            initializeApp();
+        }
+
+        const translations = {
+            en: {
+                cityNotFound: "City not found. Please check the city name and try again.",
+                enterCity: "Please enter a city name!",
+                networkError: "Failed to fetch weather data. Please try again later.",
+                loading: "Loading...",
+                recommendedOutfit: "Recommended Outfit",
+                weeklyForecast: "7-Day Forecast",
+                today: "Today",
+                weather: {
+                    clear: "Clear",
+                    clouds: "Cloudy",
+                    rain: "Rainy",
+                    snow: "Snowy",
+                    thunderstorm: "Thunderstorm",
+                    drizzle: "Drizzle",
+                    mist: "Misty",
+                    fog: "Foggy",
+                    unknown: "--"
+                },
+                outfits: {
+                    cold: "❄️ <strong>Cold Weather:</strong><br>- Thick winter coat<br>- Thermal underwear<br>- Wool sweater<br>- Warm pants<br>- Winter boots<br>- Scarf, gloves, and hat",
+                    mild: "🍂 <strong>Mild Weather:</strong><br>- Light jacket or cardigan<br>- Long sleeve shirt<br>- Regular pants or jeans<br>- Comfortable shoes<br>- Light scarf (optional)",
+                    warm: "☀️ <strong>Warm Weather:</strong><br>- T-shirt or short sleeve shirt<br>- Shorts or light pants<br>- Sandals or breathable shoes<br>- Sun hat<br>- Sunglasses",
+                    rainTip: "<br>🌧 <strong>Rain Protection:</strong><br>- Waterproof jacket<br>- Umbrella<br>- Water-resistant shoes",
+                    snowTip: "<br>❄️ <strong>Snow Protection:</strong><br>- Waterproof snow boots<br>- Extra warm socks<br>- Snow pants<br>- Waterproof gloves"
+                },
+                outfitTips: {
+                    cold: "Warm layers",
+                    mild: "Light jacket",
+                    warm: "Light clothes"
+                },
+                apiKeyError: "Please provide a valid OpenWeatherMap API key.",
+                humidity: 'Humidity',
+                windSpeed: 'Wind Speed',
+                lastUpdate: 'Last Update',
+                feelsLike: 'Feels Like',
+                appTitle: "Best Weather Dress Guide",
+                appSubtitle: "Create stunning AI-generated outfits in seconds",
+                appInstruction: "Select/input country, city, and date below",
+                title: 'Best Weather Dress Guide'
+            },
+            zh: {
+                cityNotFound: "找不到该城市，请检查城市名称是否正确。",
+                enterCity: "请输入城市名称！",
+                networkError: "获取天气数据失败，请稍后重试。",
+                loading: "加载中...",
+                recommendedOutfit: "推荐穿搭",
+                weeklyForecast: "7天预报",
+                today: "今天",
+                weather: {
+                    clear: "晴天",
+                    clouds: "多云",
+                    rain: "雨天",
+                    snow: "雪天",
+                    thunderstorm: "雷雨",
+                    drizzle: "小雨",
+                    mist: "薄雾",
+                    fog: "雾",
+                    unknown: "--"
+                },
+                outfits: {
+                    cold: "❄️ <strong>寒冷天气：</strong><br>- 厚羽绒服或冬季外套<br>- 保暖内衣<br>- 毛衣<br>- 保暖长裤<br>- 冬靴<br>- 围巾、手套和帽子",
+                    mild: "🍂 <strong>温和天气：</strong><br>- 轻薄外套或开衫<br>- 长袖衬衫<br>- 常规长裤或牛仔裤<br>- 舒适鞋子<br>- 轻薄围巾（可选）",
+                    warm: "☀️ <strong>温暖天气：</strong><br>- T恤或短袖衬衫<br>- 短裤或轻薄长裤<br>- 凉鞋或透气鞋<br>- 遮阳帽<br>- 太阳镜",
+                    rainTip: "<br>🌧 <strong>雨天防护：</strong><br>- 防水外套<br>- 雨伞<br>- 防水鞋",
+                    snowTip: "<br>❄️ <strong>雪天防护：</strong><br>- 防水雪地靴<br>- 加厚保暖袜<br>- 雪地裤<br>- 防水手套"
+                },
+                outfitTips: {
+                    cold: "保暖层装",
+                    mild: "轻薄外套",
+                    warm: "清凉装扮"
+                },
+                apiKeyError: "请提供有效的 OpenWeatherMap API 密钥。",
+                humidity: '湿度',
+                windSpeed: '风速',
+                lastUpdate: '最后更新',
+                feelsLike: '体感温度',
+                appTitle: "最好的天气穿衣指南",
+                appSubtitle: "几秒内将生成令人惊叹的AI推荐穿搭",
+                appInstruction: "直接在下方选择/输入国家，城市，日期",
+                title: '最好的天气穿衣指南'
+            }
+        };
+
+        // 常用国家和城市列表
+        const popularCities = {
+            CN: {
+                en: [
+                    { name: 'Beijing', latitude: 39.9042, longitude: 116.4074 },
+                    { name: 'Shanghai', latitude: 31.2304, longitude: 121.4737 },
+                    { name: 'Tianjin', latitude: 39.3434, longitude: 117.3616 },
+                    { name: 'Chongqing', latitude: 29.4316, longitude: 106.9123 },
+                    { name: 'Guangzhou', latitude: 23.1291, longitude: 113.2644 },
+                    { name: 'Nanjing', latitude: 32.0603, longitude: 118.7969 },
+                    { name: 'Hangzhou', latitude: 30.2741, longitude: 120.1551 },
+                    { name: 'Wuhan', latitude: 30.5928, longitude: 114.3055 },
+                    { name: 'Chengdu', latitude: 30.5728, longitude: 104.0668 },
+                    { name: 'Xian', latitude: 34.3416, longitude: 108.9398 },
+                    { name: 'Jinan', latitude: 36.6512, longitude: 117.1201 },
+                    { name: 'Zhengzhou', latitude: 34.7472, longitude: 113.6249 },
+                    { name: 'Changsha', latitude: 28.2278, longitude: 112.9388 },
+                    { name: 'Fuzhou', latitude: 26.0745, longitude: 119.2965 },
+                    { name: 'Nanchang', latitude: 28.6820, longitude: 115.8579 },
+                    { name: 'Kunming', latitude: 24.8801, longitude: 102.8329 },
+                    { name: 'Hefei', latitude: 31.8206, longitude: 117.2272 },
+                    { name: 'Shijiazhuang', latitude: 38.0428, longitude: 114.5149 },
+                    { name: 'Taiyuan', latitude: 37.8706, longitude: 112.5489 },
+                    { name: 'Changchun', latitude: 43.8171, longitude: 125.3235 },
+                    { name: 'Harbin', latitude: 45.8038, longitude: 126.5340 },
+                    { name: 'Shenyang', latitude: 41.8057, longitude: 123.4315 },
+                    { name: 'Nanning', latitude: 22.8170, longitude: 108.3665 },
+                    { name: 'Guiyang', latitude: 26.6470, longitude: 106.6302 },
+                    { name: 'Lanzhou', latitude: 36.0611, longitude: 103.8343 },
+                    { name: 'Xining', latitude: 36.6232, longitude: 101.7804 },
+                    { name: 'Yinchuan', latitude: 38.4872, longitude: 106.2309 },
+                    { name: 'Urumqi', latitude: 43.8256, longitude: 87.6168 },
+                    { name: 'Hohhot', latitude: 40.8424, longitude: 111.7490 },
+                    { name: 'Suzhou', latitude: 31.2990, longitude: 120.5853 },
+                    { name: 'Xiamen', latitude: 24.4798, longitude: 118.0819 },
+                    { name: 'Guilin', latitude: 25.2744, longitude: 110.2992 },
+                    { name: 'Sanya', latitude: 18.2525, longitude: 109.5117 },
+                    { name: 'Lijiang', latitude: 26.8721, longitude: 100.2346 },
+                    { name: 'Dali', latitude: 25.6065, longitude: 100.2675 },
+                    { name: 'Huangshan', latitude: 29.7147, longitude: 118.3147 },
+                    { name: 'Zhangjiajie', latitude: 29.1170, longitude: 110.4790 },
+                    { name: 'Qingdao', latitude: 36.0671, longitude: 120.3826 },
+                    { name: 'Dalian', latitude: 38.9140, longitude: 121.6147 },
+                    { name: 'Lhasa', latitude: 29.6500, longitude: 91.1000 }
+                ],
+                zh: [
+                    { name: '北京', latitude: 39.9042, longitude: 116.4074 },
+                    { name: '上海', latitude: 31.2304, longitude: 121.4737 },
+                    { name: '天津', latitude: 39.3434, longitude: 117.3616 },
+                    { name: '重庆', latitude: 29.4316, longitude: 106.9123 },
+                    { name: '广州', latitude: 23.1291, longitude: 113.2644 },
+                    { name: '南京', latitude: 32.0603, longitude: 118.7969 },
+                    { name: '杭州', latitude: 30.2741, longitude: 120.1551 },
+                    { name: '武汉', latitude: 30.5928, longitude: 114.3055 },
+                    { name: '成都', latitude: 30.5728, longitude: 104.0668 },
+                    { name: '西安', latitude: 34.3416, longitude: 108.9398 },
+                    { name: '济南', latitude: 36.6512, longitude: 117.1201 },
+                    { name: '郑州', latitude: 34.7472, longitude: 113.6249 },
+                    { name: '长沙', latitude: 28.2278, longitude: 112.9388 },
+                    { name: '福州', latitude: 26.0745, longitude: 119.2965 },
+                    { name: '南昌', latitude: 28.6820, longitude: 115.8579 },
+                    { name: '昆明', latitude: 24.8801, longitude: 102.8329 },
+                    { name: '合肥', latitude: 31.8206, longitude: 117.2272 },
+                    { name: '石家庄', latitude: 38.0428, longitude: 114.5149 },
+                    { name: '太原', latitude: 37.8706, longitude: 112.5489 },
+                    { name: '长春', latitude: 43.8171, longitude: 125.3235 },
+                    { name: '哈尔滨', latitude: 45.8038, longitude: 126.5340 },
+                    { name: '沈阳', latitude: 41.8057, longitude: 123.4315 },
+                    { name: '南宁', latitude: 22.8170, longitude: 108.3665 },
+                    { name: '贵阳', latitude: 26.6470, longitude: 106.6302 },
+                    { name: '兰州', latitude: 36.0611, longitude: 103.8343 },
+                    { name: '西宁', latitude: 36.6232, longitude: 101.7804 },
+                    { name: '银川', latitude: 38.4872, longitude: 106.2309 },
+                    { name: '乌鲁木齐', latitude: 43.8256, longitude: 87.6168 },
+                    { name: '呼和浩特', latitude: 40.8424, longitude: 111.7490 },
+                    { name: '苏州', latitude: 31.2990, longitude: 120.5853 },
+                    { name: '厦门', latitude: 24.4798, longitude: 118.0819 },
+                    { name: '桂林', latitude: 25.2744, longitude: 110.2992 },
+                    { name: '三亚', latitude: 18.2525, longitude: 109.5117 },
+                    { name: '丽江', latitude: 26.8721, longitude: 100.2346 },
+                    { name: '大理', latitude: 25.6065, longitude: 100.2675 },
+                    { name: '黄山', latitude: 29.7147, longitude: 118.3147 },
+                    { name: '张家界', latitude: 29.1170, longitude: 110.4790 },
+                    { name: '青岛', latitude: 36.0671, longitude: 120.3826 },
+                    { name: '大连', latitude: 38.9140, longitude: 121.6147 },
+                    { name: '拉萨', latitude: 29.6500, longitude: 91.1000 }
+                ]
+            },
+            JP: {
+                en: [
+                    { name: 'Tokyo', latitude: 35.6762, longitude: 139.6503 },
+                    { name: 'Osaka', latitude: 34.6937, longitude: 135.5023 },
+                    { name: 'Kyoto', latitude: 35.0116, longitude: 135.7681 },
+                    { name: 'Sapporo', latitude: 43.0618, longitude: 141.3545 },
+                    { name: 'Fukuoka', latitude: 33.5902, longitude: 130.4017 }
+                ],
+                zh: [
+                    { name: '东京', latitude: 35.6762, longitude: 139.6503 },
+                    { name: '大阪', latitude: 34.6937, longitude: 135.5023 },
+                    { name: '京都', latitude: 35.0116, longitude: 135.7681 },
+                    { name: '札幌', latitude: 43.0618, longitude: 141.3545 },
+                    { name: '福冈', latitude: 33.5902, longitude: 130.4017 }
+                ]
+            },
+            US: {
+                en: [
+                    { name: 'New York', latitude: 40.7128, longitude: -74.0060 },
+                    { name: 'Los Angeles', latitude: 34.0522, longitude: -118.2437 },
+                    { name: 'Chicago', latitude: 41.8781, longitude: -87.6298 },
+                    { name: 'San Francisco', latitude: 37.7749, longitude: -122.4194 },
+                    { name: 'Miami', latitude: 25.7617, longitude: -80.1918 },
+                    { name: 'Las Vegas', latitude: 36.1699, longitude: -115.1398 }
+                ],
+                zh: [
+                    { name: '纽约', latitude: 40.7128, longitude: -74.0060 },
+                    { name: '洛杉矶', latitude: 34.0522, longitude: -118.2437 },
+                    { name: '芝加哥', latitude: 41.8781, longitude: -87.6298 },
+                    { name: '旧金山', latitude: 37.7749, longitude: -122.4194 },
+                    { name: '迈阿密', latitude: 25.7617, longitude: -80.1918 },
+                    { name: '拉斯维加斯', latitude: 36.1699, longitude: -115.1398 }
+                ]
+            },
+            GB: {
+                en: [
+                    { name: 'London', latitude: 51.5074, longitude: -0.1278 },
+                    { name: 'Manchester', latitude: 53.4808, longitude: -2.2426 },
+                    { name: 'Edinburgh', latitude: 55.9533, longitude: -3.1883 },
+                    { name: 'Liverpool', latitude: 53.4084, longitude: -2.9916 }
+                ],
+                zh: [
+                    { name: '伦敦', latitude: 51.5074, longitude: -0.1278 },
+                    { name: '曼彻斯特', latitude: 53.4808, longitude: -2.2426 },
+                    { name: '爱丁堡', latitude: 55.9533, longitude: -3.1883 },
+                    { name: '利物浦', latitude: 53.4084, longitude: -2.9916 }
+                ]
+            },
+            FR: {
+                en: [
+                    { name: 'Paris', latitude: 48.8566, longitude: 2.3522 },
+                    { name: 'Nice', latitude: 43.7102, longitude: 7.2620 },
+                    { name: 'Lyon', latitude: 45.7640, longitude: 4.8357 },
+                    { name: 'Marseille', latitude: 43.2965, longitude: 5.3698 }
+                ],
+                zh: [
+                    { name: '巴黎', latitude: 48.8566, longitude: 2.3522 },
+                    { name: '尼斯', latitude: 43.7102, longitude: 7.2620 },
+                    { name: '里昂', latitude: 45.7640, longitude: 4.8357 },
+                    { name: '马赛', latitude: 43.2965, longitude: 5.3698 }
+                ]
+            },
+            IT: {
+                en: [
+                    { name: 'Rome', latitude: 41.9028, longitude: 12.4964 },
+                    { name: 'Milan', latitude: 45.4642, longitude: 9.1900 },
+                    { name: 'Venice', latitude: 45.4408, longitude: 12.3155 },
+                    { name: 'Florence', latitude: 43.7696, longitude: 11.2558 }
+                ],
+                zh: [
+                    { name: '罗马', latitude: 41.9028, longitude: 12.4964 },
+                    { name: '米兰', latitude: 45.4642, longitude: 9.1900 },
+                    { name: '威尼斯', latitude: 45.4408, longitude: 12.3155 },
+                    { name: '佛罗伦萨', latitude: 43.7696, longitude: 11.2558 }
+                ]
+            },
+            DE: {
+                en: [
+                    { name: 'Berlin', latitude: 52.5200, longitude: 13.4050 },
+                    { name: 'Munich', latitude: 48.1351, longitude: 11.5820 },
+                    { name: 'Hamburg', latitude: 53.5511, longitude: 9.9937 },
+                    { name: 'Frankfurt', latitude: 50.1109, longitude: 8.6821 }
+                ],
+                zh: [
+                    { name: '柏林', latitude: 52.5200, longitude: 13.4050 },
+                    { name: '慕尼黑', latitude: 48.1351, longitude: 11.5820 },
+                    { name: '汉堡', latitude: 53.5511, longitude: 9.9937 },
+                    { name: '法兰克福', latitude: 50.1109, longitude: 8.6821 }
+                ]
+            },
+            AU: {
+                en: [
+                    { name: 'Sydney', latitude: -33.8688, longitude: 151.2093 },
+                    { name: 'Melbourne', latitude: -37.8136, longitude: 144.9631 },
+                    { name: 'Brisbane', latitude: -27.4705, longitude: 153.0260 },
+                    { name: 'Perth', latitude: -31.9505, longitude: 115.8605 }
+                ],
+                zh: [
+                    { name: '悉尼', latitude: -33.8688, longitude: 151.2093 },
+                    { name: '墨尔本', latitude: -37.8136, longitude: 144.9631 },
+                    { name: '布里斯班', latitude: -27.4705, longitude: 153.0260 },
+                    { name: '珀斯', latitude: -31.9505, longitude: 115.8605 }
+                ]
+            },
+            SG: {
+                en: [
+                    { name: 'Singapore', latitude: 1.3521, longitude: 103.8198 }
+                ],
+                zh: [
+                    { name: '新加坡', latitude: 1.3521, longitude: 103.8198 }
+                ]
+            },
+            TH: {
+                en: [
+                    { name: 'Bangkok', latitude: 13.7563, longitude: 100.5018 },
+                    { name: 'Phuket', latitude: 7.8804, longitude: 98.3923 }
+                ],
+                zh: [
+                    { name: '曼谷', latitude: 13.7563, longitude: 100.5018 },
+                    { name: '普吉岛', latitude: 7.8804, longitude: 98.3923 }
+                ]
+            },
+            KR: {
+                en: [
+                    { name: 'Seoul', latitude: 37.5665, longitude: 126.9780 },
+                    { name: 'Busan', latitude: 35.1796, longitude: 129.0756 },
+                    { name: 'Incheon', latitude: 37.4563, longitude: 126.7052 },
+                    { name: 'Jeju', latitude: 33.4996, longitude: 126.5312 },
+                    { name: 'Daegu', latitude: 35.8714, longitude: 128.6014 },
+                    { name: 'Daejeon', latitude: 36.3504, longitude: 127.3845 }
+                ],
+                zh: [
+                    { name: '首尔', latitude: 37.5665, longitude: 126.9780 },
+                    { name: '釜山', latitude: 35.1796, longitude: 129.0756 },
+                    { name: '仁川', latitude: 37.4563, longitude: 126.7052 },
+                    { name: '济州', latitude: 33.4996, longitude: 126.5312 },
+                    { name: '大邱', latitude: 35.8714, longitude: 128.6014 },
+                    { name: '大田', latitude: 36.3504, longitude: 127.3845 }
+                ]
+            },
+            CA: {
+                en: [
+                    { name: 'Toronto', latitude: 43.6532, longitude: -79.3832 },
+                    { name: 'Vancouver', latitude: 49.2827, longitude: -123.1207 },
+                    { name: 'Montreal', latitude: 45.5017, longitude: -73.5673 },
+                    { name: 'Calgary', latitude: 51.0447, longitude: -114.0719 },
+                    { name: 'Ottawa', latitude: 45.4215, longitude: -75.6972 },
+                    { name: 'Edmonton', latitude: 53.5461, longitude: -113.4938 }
+                ],
+                zh: [
+                    { name: '多伦多', latitude: 43.6532, longitude: -79.3832 },
+                    { name: '温哥华', latitude: 49.2827, longitude: -123.1207 },
+                    { name: '蒙特利尔', latitude: 45.5017, longitude: -73.5673 },
+                    { name: '卡尔加里', latitude: 51.0447, longitude: -114.0719 },
+                    { name: '渥太华', latitude: 45.4215, longitude: -75.6972 },
+                    { name: '埃德蒙顿', latitude: 53.5461, longitude: -113.4938 }
+                ]
+            },
+            ES: {
+                en: [
+                    { name: 'Madrid', latitude: 40.4168, longitude: -3.7038 },
+                    { name: 'Barcelona', latitude: 41.3851, longitude: 2.1734 },
+                    { name: 'Valencia', latitude: 39.4699, longitude: -0.3763 },
+                    { name: 'Seville', latitude: 37.3891, longitude: -5.9845 },
+                    { name: 'Malaga', latitude: 36.7213, longitude: -4.4217 },
+                    { name: 'Bilbao', latitude: 43.2630, longitude: -2.9350 }
+                ],
+                zh: [
+                    { name: '马德里', latitude: 40.4168, longitude: -3.7038 },
+                    { name: '巴塞罗那', latitude: 41.3851, longitude: 2.1734 },
+                    { name: '瓦伦西亚', latitude: 39.4699, longitude: -0.3763 },
+                    { name: '塞维利亚', latitude: 37.3891, longitude: -5.9845 },
+                    { name: '马拉加', latitude: 36.7213, longitude: -4.4217 },
+                    { name: '毕尔巴鄂', latitude: 43.2630, longitude: -2.9350 }
+                ]
+            },
+            PT: {
+                en: [
+                    { name: 'Lisbon', latitude: 38.7223, longitude: -9.1393 },
+                    { name: 'Porto', latitude: 41.1579, longitude: -8.6291 },
+                    { name: 'Faro', latitude: 37.0194, longitude: -7.9322 },
+                    { name: 'Coimbra', latitude: 40.2033, longitude: -8.4103 }
+                ],
+                zh: [
+                    { name: '里斯本', latitude: 38.7223, longitude: -9.1393 },
+                    { name: '波尔图', latitude: 41.1579, longitude: -8.6291 },
+                    { name: '法鲁', latitude: 37.0194, longitude: -7.9322 },
+                    { name: '科英布拉', latitude: 40.2033, longitude: -8.4103 }
+                ]
+            },
+            NL: {
+                en: [
+                    { name: 'Amsterdam', latitude: 52.3676, longitude: 4.9041 },
+                    { name: 'Rotterdam', latitude: 51.9244, longitude: 4.4777 },
+                    { name: 'The Hague', latitude: 52.0705, longitude: 4.3007 },
+                    { name: 'Utrecht', latitude: 52.0907, longitude: 5.1214 },
+                    { name: 'Eindhoven', latitude: 51.4416, longitude: 5.4697 }
+                ],
+                zh: [
+                    { name: '阿姆斯特丹', latitude: 52.3676, longitude: 4.9041 },
+                    { name: '鹿特丹', latitude: 51.9244, longitude: 4.4777 },
+                    { name: '海牙', latitude: 52.0705, longitude: 4.3007 },
+                    { name: '乌特勒支', latitude: 52.0907, longitude: 5.1214 },
+                    { name: '埃因霍温', latitude: 51.4416, longitude: 5.4697 }
+                ]
+            },
+            CH: {
+                en: [
+                    { name: 'Zurich', latitude: 47.3769, longitude: 8.5417 },
+                    { name: 'Geneva', latitude: 46.2044, longitude: 6.1432 },
+                    { name: 'Basel', latitude: 47.5596, longitude: 7.5886 },
+                    { name: 'Bern', latitude: 46.9480, longitude: 7.4474 },
+                    { name: 'Lausanne', latitude: 46.5197, longitude: 6.6323 }
+                ],
+                zh: [
+                    { name: '苏黎世', latitude: 47.3769, longitude: 8.5417 },
+                    { name: '日内瓦', latitude: 46.2044, longitude: 6.1432 },
+                    { name: '巴塞尔', latitude: 47.5596, longitude: 7.5886 },
+                    { name: '伯尔尼', latitude: 46.9480, longitude: 7.4474 },
+                    { name: '洛桑', latitude: 46.5197, longitude: 6.6323 }
+                ]
+            },
+            SE: {
+                en: [
+                    { name: 'Stockholm', latitude: 59.3293, longitude: 18.0686 },
+                    { name: 'Gothenburg', latitude: 57.7089, longitude: 11.9746 },
+                    { name: 'Malmo', latitude: 55.6044, longitude: 13.0038 },
+                    { name: 'Uppsala', latitude: 59.8586, longitude: 17.6389 }
+                ],
+                zh: [
+                    { name: '斯德哥尔摩', latitude: 59.3293, longitude: 18.0686 },
+                    { name: '哥德堡', latitude: 57.7089, longitude: 11.9746 },
+                    { name: '马尔默', latitude: 55.6044, longitude: 13.0038 },
+                    { name: '乌普萨拉', latitude: 59.8586, longitude: 17.6389 }
+                ]
+            },
+            NO: {
+                en: [
+                    { name: 'Oslo', latitude: 59.9139, longitude: 10.7522 },
+                    { name: 'Bergen', latitude: 60.3913, longitude: 5.3221 },
+                    { name: 'Trondheim', latitude: 63.4305, longitude: 10.3951 },
+                    { name: 'Stavanger', latitude: 58.9700, longitude: 5.7331 }
+                ],
+                zh: [
+                    { name: '奥斯陆', latitude: 59.9139, longitude: 10.7522 },
+                    { name: '卑尔根', latitude: 60.3913, longitude: 5.3221 },
+                    { name: '特隆赫姆', latitude: 63.4305, longitude: 10.3951 },
+                    { name: '斯塔万格', latitude: 58.9700, longitude: 5.7331 }
+                ]
+            },
+            NZ: {
+                en: [
+                    { name: 'Auckland', latitude: -36.8485, longitude: 174.7633 },
+                    { name: 'Wellington', latitude: -41.2866, longitude: 174.7756 },
+                    { name: 'Christchurch', latitude: -43.5320, longitude: 172.6306 },
+                    { name: 'Hamilton', latitude: -37.7870, longitude: 175.2793 },
+                    { name: 'Dunedin', latitude: -45.8788, longitude: 170.5028 }
+                ],
+                zh: [
+                    { name: '奥克兰', latitude: -36.8485, longitude: 174.7633 },
+                    { name: '惠灵顿', latitude: -41.2866, longitude: 174.7756 },
+                    { name: '基督城', latitude: -43.5320, longitude: 172.6306 },
+                    { name: '汉密尔顿', latitude: -37.7870, longitude: 175.2793 },
+                    { name: '但尼丁', latitude: -45.8788, longitude: 170.5028 }
+                ]
+            },
+            AE: {
+                en: [
+                    { name: 'Dubai', latitude: 25.2048, longitude: 55.2708 },
+                    { name: 'Abu Dhabi', latitude: 24.4539, longitude: 54.3773 },
+                    { name: 'Sharjah', latitude: 25.3573, longitude: 55.4033 },
+                    { name: 'Ajman', latitude: 25.4052, longitude: 55.5136 },
+                    { name: 'Ras Al Khaimah', latitude: 25.7895, longitude: 55.9432 }
+                ],
+                zh: [
+                    { name: '迪拜', latitude: 25.2048, longitude: 55.2708 },
+                    { name: '阿布扎比', latitude: 24.4539, longitude: 54.3773 },
+                    { name: '沙迦', latitude: 25.3573, longitude: 55.4033 },
+                    { name: '阿治曼', latitude: 25.4052, longitude: 55.5136 },
+                    { name: '哈伊马角', latitude: 25.7895, longitude: 55.9432 }
+                ]
+            },
+            RU: {
+                en: [
+                    { name: 'Moscow', latitude: 55.7558, longitude: 37.6173 },
+                    { name: 'Saint Petersburg', latitude: 59.9343, longitude: 30.3351 },
+                    { name: 'Novosibirsk', latitude: 55.0084, longitude: 82.9357 },
+                    { name: 'Yekaterinburg', latitude: 56.8389, longitude: 60.6057 },
+                    { name: 'Kazan', latitude: 55.7887, longitude: 49.1221 }
+                ],
+                zh: [
+                    { name: '莫斯科', latitude: 55.7558, longitude: 37.6173 },
+                    { name: '圣彼得堡', latitude: 59.9343, longitude: 30.3351 },
+                    { name: '新西伯利亚', latitude: 55.0084, longitude: 82.9357 },
+                    { name: '叶卡捷琳堡', latitude: 56.8389, longitude: 60.6057 },
+                    { name: '喀山', latitude: 55.7887, longitude: 49.1221 }
+                ]
+            },
+            BR: {
+                en: [
+                    { name: 'Sao Paulo', latitude: -23.5505, longitude: -46.6333 },
+                    { name: 'Rio de Janeiro', latitude: -22.9068, longitude: -43.1729 },
+                    { name: 'Brasilia', latitude: -15.7975, longitude: -47.8919 },
+                    { name: 'Salvador', latitude: -12.9714, longitude: -38.5014 },
+                    { name: 'Fortaleza', latitude: -3.7319, longitude: -38.5267 }
+                ],
+                zh: [
+                    { name: '圣保罗', latitude: -23.5505, longitude: -46.6333 },
+                    { name: '里约热内卢', latitude: -22.9068, longitude: -43.1729 },
+                    { name: '巴西利亚', latitude: -15.7975, longitude: -47.8919 },
+                    { name: '萨尔瓦多', latitude: -12.9714, longitude: -38.5014 },
+                    { name: '福塔莱萨', latitude: -3.7319, longitude: -38.5267 }
+                ]
+            },
+            IN: {
+                en: [
+                    { name: 'New Delhi', latitude: 28.6139, longitude: 77.2090 },
+                    { name: 'Mumbai', latitude: 19.0760, longitude: 72.8777 },
+                    { name: 'Bangalore', latitude: 12.9716, longitude: 77.5946 },
+                    { name: 'Chennai', latitude: 13.0827, longitude: 80.2707 },
+                    { name: 'Kolkata', latitude: 22.5726, longitude: 88.3639 }
+                ],
+                zh: [
+                    { name: '新德里', latitude: 28.6139, longitude: 77.2090 },
+                    { name: '孟买', latitude: 19.0760, longitude: 72.8777 },
+                    { name: '班加罗尔', latitude: 12.9716, longitude: 77.5946 },
+                    { name: '金奈', latitude: 13.0827, longitude: 80.2707 },
+                    { name: '加尔各答', latitude: 22.5726, longitude: 88.3639 }
+                ]
+            },
+            MX: {
+                en: [
+                    { name: 'Mexico City', latitude: 19.4326, longitude: -99.1332 },
+                    { name: 'Guadalajara', latitude: 20.6597, longitude: -103.3496 },
+                    { name: 'Monterrey', latitude: 25.6866, longitude: -100.3161 },
+                    { name: 'Cancun', latitude: 21.1619, longitude: -86.8515 },
+                    { name: 'Tijuana', latitude: 32.5149, longitude: -117.0382 }
+                ],
+                zh: [
+                    { name: '墨西哥城', latitude: 19.4326, longitude: -99.1332 },
+                    { name: '瓜达拉哈拉', latitude: 20.6597, longitude: -103.3496 },
+                    { name: '蒙特雷', latitude: 25.6866, longitude: -100.3161 },
+                    { name: '坎昆', latitude: 21.1619, longitude: -86.8515 },
+                    { name: '蒂华纳', latitude: 32.5149, longitude: -117.0382 }
+                ]
+            },
+            AR: {
+                en: [
+                    { name: 'Buenos Aires', latitude: -34.6037, longitude: -58.3816 },
+                    { name: 'Cordoba', latitude: -31.4201, longitude: -64.1888 },
+                    { name: 'Rosario', latitude: -32.9468, longitude: -60.6393 },
+                    { name: 'Mendoza', latitude: -32.8908, longitude: -68.8272 },
+                    { name: 'Mar del Plata', latitude: -38.0055, longitude: -57.5426 }
+                ],
+                zh: [
+                    { name: '布宜诺斯艾利斯', latitude: -34.6037, longitude: -58.3816 },
+                    { name: '科尔多瓦', latitude: -31.4201, longitude: -64.1888 },
+                    { name: '罗萨里奥', latitude: -32.9468, longitude: -60.6393 },
+                    { name: '门多萨', latitude: -32.8908, longitude: -68.8272 },
+                    { name: '马德普拉塔', latitude: -38.0055, longitude: -57.5426 }
+                ]
+            },
+            ZA: {
+                en: [
+                    { name: 'Cape Town', latitude: -33.9249, longitude: 18.4241 },
+                    { name: 'Johannesburg', latitude: -26.2041, longitude: 28.0473 },
+                    { name: 'Durban', latitude: -29.8587, longitude: 31.0218 },
+                    { name: 'Pretoria', latitude: -25.7461, longitude: 28.1881 },
+                    { name: 'Port Elizabeth', latitude: -33.7139, longitude: 25.5207 }
+                ],
+                zh: [
+                    { name: '开普敦', latitude: -33.9249, longitude: 18.4241 },
+                    { name: '约翰内斯堡', latitude: -26.2041, longitude: 28.0473 },
+                    { name: '德班', latitude: -29.8587, longitude: 31.0218 },
+                    { name: '比勒陀利亚', latitude: -25.7461, longitude: 28.1881 },
+                    { name: '伊丽莎白港', latitude: -33.7139, longitude: 25.5207 }
+                ]
+            },
+            EG: {
+                en: [
+                    { name: 'Cairo', latitude: 30.0444, longitude: 31.2357 },
+                    { name: 'Alexandria', latitude: 31.2001, longitude: 29.9187 },
+                    { name: 'Giza', latitude: 30.0131, longitude: 31.2089 },
+                    { name: 'Luxor', latitude: 25.6872, longitude: 32.6396 },
+                    { name: 'Aswan', latitude: 24.0889, longitude: 32.8998 }
+                ],
+                zh: [
+                    { name: '开罗', latitude: 30.0444, longitude: 31.2357 },
+                    { name: '亚历山大', latitude: 31.2001, longitude: 29.9187 },
+                    { name: '吉萨', latitude: 30.0131, longitude: 31.2089 },
+                    { name: '卢克索', latitude: 25.6872, longitude: 32.6396 },
+                    { name: '阿斯旺', latitude: 24.0889, longitude: 32.8998 }
+                ]
+            },
+            GR: {
+                en: [
+                    { name: 'Athens', latitude: 37.9838, longitude: 23.7275 },
+                    { name: 'Thessaloniki', latitude: 40.6401, longitude: 22.9444 },
+                    { name: 'Heraklion', latitude: 35.3387, longitude: 25.1442 },
+                    { name: 'Rhodes', latitude: 36.4341, longitude: 28.2176 },
+                    { name: 'Patras', latitude: 38.2466, longitude: 21.7346 }
+                ],
+                zh: [
+                    { name: '雅典', latitude: 37.9838, longitude: 23.7275 },
+                    { name: '塞萨洛尼基', latitude: 40.6401, longitude: 22.9444 },
+                    { name: '伊拉克利翁', latitude: 35.3387, longitude: 25.1442 },
+                    { name: '罗德岛', latitude: 36.4341, longitude: 28.2176 },
+                    { name: '帕特雷', latitude: 38.2466, longitude: 21.7346 }
+                ]
+            },
+            TR: {
+                en: [
+                    { name: 'Istanbul', latitude: 41.0082, longitude: 28.9784 },
+                    { name: 'Ankara', latitude: 39.9334, longitude: 32.8597 },
+                    { name: 'Izmir', latitude: 38.4237, longitude: 27.1428 },
+                    { name: 'Antalya', latitude: 36.8969, longitude: 30.7133 },
+                    { name: 'Bursa', latitude: 40.1885, longitude: 29.0610 }
+                ],
+                zh: [
+                    { name: '伊斯坦布尔', latitude: 41.0082, longitude: 28.9784 },
+                    { name: '安卡拉', latitude: 39.9334, longitude: 32.8597 },
+                    { name: '伊兹密尔', latitude: 38.4237, longitude: 27.1428 },
+                    { name: '安塔利亚', latitude: 36.8969, longitude: 30.7133 },
+                    { name: '布尔萨', latitude: 40.1885, longitude: 29.0610 }
+                ]
+            },
+            AT: {
+                en: [
+                    { name: 'Vienna', latitude: 48.2082, longitude: 16.3738 },
+                    { name: 'Salzburg', latitude: 47.8095, longitude: 13.0550 },
+                    { name: 'Innsbruck', latitude: 47.2692, longitude: 11.4041 },
+                    { name: 'Graz', latitude: 47.0707, longitude: 15.4395 },
+                    { name: 'Linz', latitude: 48.3069, longitude: 14.2858 }
+                ],
+                zh: [
+                    { name: '维也纳', latitude: 48.2082, longitude: 16.3738 },
+                    { name: '萨尔茨堡', latitude: 47.8095, longitude: 13.0550 },
+                    { name: '因斯布鲁克', latitude: 47.2692, longitude: 11.4041 },
+                    { name: '格拉茨', latitude: 47.0707, longitude: 15.4395 },
+                    { name: '林茨', latitude: 48.3069, longitude: 14.2858 }
+                ]
+            },
+            BE: {
+                en: [
+                    { name: 'Brussels', latitude: 50.8503, longitude: 4.3517 },
+                    { name: 'Antwerp', latitude: 51.2194, longitude: 4.4025 },
+                    { name: 'Ghent', latitude: 51.0543, longitude: 3.7174 },
+                    { name: 'Bruges', latitude: 51.2093, longitude: 3.2247 },
+                    { name: 'Liege', latitude: 50.6326, longitude: 5.5797 }
+                ],
+                zh: [
+                    { name: '布鲁塞尔', latitude: 50.8503, longitude: 4.3517 },
+                    { name: '安特卫普', latitude: 51.2194, longitude: 4.4025 },
+                    { name: '根特', latitude: 51.0543, longitude: 3.7174 },
+                    { name: '布鲁日', latitude: 51.2093, longitude: 3.2247 },
+                    { name: '列日', latitude: 50.6326, longitude: 5.5797 }
+                ]
+            },
+            DK: {
+                en: [
+                    { name: 'Copenhagen', latitude: 55.6761, longitude: 12.5683 },
+                    { name: 'Aarhus', latitude: 56.1567, longitude: 10.2108 },
+                    { name: 'Odense', latitude: 55.4038, longitude: 10.4024 },
+                    { name: 'Aalborg', latitude: 57.0488, longitude: 9.9217 },
+                    { name: 'Esbjerg', latitude: 55.4768, longitude: 8.4595 }
+                ],
+                zh: [
+                    { name: '哥本哈根', latitude: 55.6761, longitude: 12.5683 },
+                    { name: '奥胡斯', latitude: 56.1567, longitude: 10.2108 },
+                    { name: '欧登塞', latitude: 55.4038, longitude: 10.4024 },
+                    { name: '奥尔堡', latitude: 57.0488, longitude: 9.9217 },
+                    { name: '埃斯比约', latitude: 55.4768, longitude: 8.4595 }
+                ]
+            },
+            FI: {
+                en: [
+                    { name: 'Helsinki', latitude: 60.1699, longitude: 24.9384 },
+                    { name: 'Tampere', latitude: 61.4978, longitude: 23.7610 },
+                    { name: 'Turku', latitude: 60.4518, longitude: 22.2666 },
+                    { name: 'Oulu', latitude: 65.0121, longitude: 25.4651 },
+                    { name: 'Espoo', latitude: 60.2055, longitude: 24.6559 }
+                ],
+                zh: [
+                    { name: '赫尔辛基', latitude: 60.1699, longitude: 24.9384 },
+                    { name: '坦佩雷', latitude: 61.4978, longitude: 23.7610 },
+                    { name: '图尔库', latitude: 60.4518, longitude: 22.2666 },
+                    { name: '奥卢', latitude: 65.0121, longitude: 25.4651 },
+                    { name: '埃斯波', latitude: 60.2055, longitude: 24.6559 }
+                ]
+            },
+            IE: {
+                en: [
+                    { name: 'Dublin', latitude: 53.3498, longitude: -6.2603 },
+                    { name: 'Cork', latitude: 51.8985, longitude: -8.4756 },
+                    { name: 'Galway', latitude: 53.2707, longitude: -9.0568 },
+                    { name: 'Limerick', latitude: 52.6638, longitude: -8.6267 },
+                    { name: 'Waterford', latitude: 52.2593, longitude: -7.1192 }
+                ],
+                zh: [
+                    { name: '都柏林', latitude: 53.3498, longitude: -6.2603 },
+                    { name: '科克', latitude: 51.8985, longitude: -8.4756 },
+                    { name: '戈尔韦', latitude: 53.2707, longitude: -9.0568 },
+                    { name: '利默里克', latitude: 52.6638, longitude: -8.6267 },
+                    { name: '沃特福德', latitude: 52.2593, longitude: -7.1192 }
+                ]
+            },
+            IL: {
+                en: [
+                    { name: 'Jerusalem', latitude: 31.7683, longitude: 35.2137 },
+                    { name: 'Tel Aviv', latitude: 32.0853, longitude: 34.7818 },
+                    { name: 'Haifa', latitude: 32.7940, longitude: 34.9896 },
+                    { name: 'Eilat', latitude: 29.5577, longitude: 34.9519 },
+                    { name: 'Beer Sheva', latitude: 31.2518, longitude: 34.7913 }
+                ],
+                zh: [
+                    { name: '耶路撒冷', latitude: 31.7683, longitude: 35.2137 },
+                    { name: '特拉维夫', latitude: 32.0853, longitude: 34.7818 },
+                    { name: '海法', latitude: 32.7940, longitude: 34.9896 },
+                    { name: '埃拉特', latitude: 29.5577, longitude: 34.9519 },
+                    { name: '贝尔谢巴', latitude: 31.2518, longitude: 34.7913 }
+                ]
+            }
+        };
+
+        // 更新常用国家列表
+        const popularCountries = {
+            en: [
+                { code: 'CN', name: 'China' },
+                { code: 'JP', name: 'Japan' },
+                { code: 'US', name: 'United States' },
+                { code: 'GB', name: 'United Kingdom' },
+                { code: 'FR', name: 'France' },
+                { code: 'IT', name: 'Italy' },
+                { code: 'DE', name: 'Germany' },
+                { code: 'AU', name: 'Australia' },
+                { code: 'SG', name: 'Singapore' },
+                { code: 'TH', name: 'Thailand' },
+                { code: 'KR', name: 'South Korea' },
+                { code: 'CA', name: 'Canada' },
+                { code: 'ES', name: 'Spain' },
+                { code: 'PT', name: 'Portugal' },
+                { code: 'NL', name: 'Netherlands' },
+                { code: 'CH', name: 'Switzerland' },
+                { code: 'SE', name: 'Sweden' },
+                { code: 'NO', name: 'Norway' },
+                { code: 'NZ', name: 'New Zealand' },
+                { code: 'AE', name: 'United Arab Emirates' },
+                { code: 'RU', name: 'Russia' },
+                { code: 'BR', name: 'Brazil' },
+                { code: 'IN', name: 'India' },
+                { code: 'MX', name: 'Mexico' },
+                { code: 'AR', name: 'Argentina' },
+                { code: 'ZA', name: 'South Africa' },
+                { code: 'EG', name: 'Egypt' },
+                { code: 'GR', name: 'Greece' },
+                { code: 'TR', name: 'Turkey' },
+                { code: 'AT', name: 'Austria' },
+                { code: 'BE', name: 'Belgium' },
+                { code: 'DK', name: 'Denmark' },
+                { code: 'FI', name: 'Finland' },
+                { code: 'IE', name: 'Ireland' },
+                { code: 'IL', name: 'Israel' }
+            ],
+            zh: [
+                { code: 'CN', name: '中国' },
+                { code: 'JP', name: '日本' },
+                { code: 'US', name: '美国' },
+                { code: 'GB', name: '英国' },
+                { code: 'FR', name: '法国' },
+                { code: 'IT', name: '意大利' },
+                { code: 'DE', name: '德国' },
+                { code: 'AU', name: '澳大利亚' },
+                { code: 'SG', name: '新加坡' },
+                { code: 'TH', name: '泰国' },
+                { code: 'KR', name: '韩国' },
+                { code: 'CA', name: '加拿大' },
+                { code: 'ES', name: '西班牙' },
+                { code: 'PT', name: '葡萄牙' },
+                { code: 'NL', name: '荷兰' },
+                { code: 'CH', name: '瑞士' },
+                { code: 'SE', name: '瑞典' },
+                { code: 'NO', name: '挪威' },
+                { code: 'NZ', name: '新西兰' },
+                { code: 'AE', name: '阿联酋' },
+                { code: 'RU', name: '俄罗斯' },
+                { code: 'BR', name: '巴西' },
+                { code: 'IN', name: '印度' },
+                { code: 'MX', name: '墨西哥' },
+                { code: 'AR', name: '阿根廷' },
+                { code: 'ZA', name: '南非' },
+                { code: 'EG', name: '埃及' },
+                { code: 'GR', name: '希腊' },
+                { code: 'TR', name: '土耳其' },
+                { code: 'AT', name: '奥地利' },
+                { code: 'BE', name: '比利时' },
+                { code: 'DK', name: '丹麦' },
+                { code: 'FI', name: '芬兰' },
+                { code: 'IE', name: '爱尔兰' },
+                { code: 'IL', name: '以色列' }
+            ]
+        };
+
+        // 当前选择的状态
+        const currentSelection = {
+            en: { country: null, city: null, date: null },
+            zh: { country: null, city: null, date: null }
+        };
+
+        // 当前语言
+        let currentLang = 'zh';
+
+        // Open-Meteo API 配置
+        const OPEN_METEO_API = {
+            WEATHER: 'https://api.open-meteo.com/v1',
+            GEO: 'https://geocoding-api.open-meteo.com/v1'
+        };
+
+        let refreshTimer = null; // 添加定时器变量
+        
+        // 添加清理函数
+        function cleanup() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+                refreshTimer = null;
+            }
+        }
+
+        // 页面卸载时清理
+        window.addEventListener('beforeunload', cleanup);
+
+        // 改进自动刷新函数
+        function startAutoRefresh() {
+            // 清理已存在的定时器
+            cleanup();
+            
+            // 设置新的定时器 (15分钟刷新一次)
+            refreshTimer = setInterval(() => {
+                const currentCity = currentSelection[currentLang].city;
+                if (currentCity) {
+                    getWeatherData(currentCity.lat, currentCity.lon, currentLang);
+                }
+            }, 15 * 60 * 1000);
+        }
+
+        // 手动刷新函数
+        async function manualRefresh() {
+            const refreshButton = document.querySelector('.refresh-button');
+            if (!refreshButton || refreshButton.disabled) return;
+
+            refreshButton.disabled = true;
+            refreshButton.classList.add('rotating');
+
+            const currentCity = currentSelection[currentLang].city;
+            if (currentCity) {
+                await getWeatherData(currentCity.lat, currentCity.lon, currentLang);
+            }
+
+            setTimeout(() => {
+                refreshButton.disabled = false;
+                refreshButton.classList.remove('rotating');
+            }, 2000);
+        }
+
+        // 优化语言初始化
+        function initializeLanguage() {
+            const savedLang = localStorage.getItem('preferred_language') || 'zh';
+            currentLang = savedLang;
+            
+            // 更新语言按钮状态
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(savedLang));
+            });
+
+            // 更新界面文本
+            updateInterfaceText(currentLang);
+        }
+
+        // 优化界面文本更新
+        function updateInterfaceText(lang) {
+            // 更新标题和其他文本
+            document.querySelector('.app-title').textContent = translations[lang].appTitle;
+            document.querySelector('.app-subtitle').textContent = translations[lang].appSubtitle;
+            document.querySelector('.app-instruction').textContent = translations[lang].appInstruction;
+            
+            // 更新导航标题
+            document.querySelector('#country-title .nav-text').textContent = 
+                lang === 'zh' ? '选择国家' : 'Select Country';
+            document.querySelector('#city-title .nav-text').textContent = 
+                lang === 'zh' ? '选择城市' : 'Select City';
+            document.querySelector('#date-title .nav-text').textContent = 
+                lang === 'zh' ? '选择日期' : 'Select Date';
+
+            // 更新搜索框占位符
+            const countrySearch = document.querySelector('#country-list .search-box');
+            const citySearch = document.querySelector('#city-list .search-box');
+            if (countrySearch) {
+                countrySearch.placeholder = lang === 'zh' ? '搜索国家...' : 'Search country...';
+            }
+            if (citySearch) {
+                citySearch.placeholder = lang === 'zh' ? '搜索城市...' : 'Search city...';
+            }
+
+            // 重新渲染国家列表
+            renderCountryList(lang);
+
+            // 如果已经选择了城市，更新天气信息
+            const currentCity = currentSelection[lang]?.city;
+            if (currentCity) {
+                getWeatherData(currentCity.lat, currentCity.lon, lang);
+            }
+        }
+
+        // 优化最近城市加载
+        function loadRecentCities() {
+            try {
+                const recentCities = JSON.parse(localStorage.getItem('recentCities')) || [];
+                if (recentCities.length > 0) {
+                    const city = recentCities[0];
+                    if (city.lat && city.lon) {
+                        getWeatherData(city.lat, city.lon, currentLang);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading recent cities:', error);
+            }
+        }
+
+        // 优化天气数据获取
+        async function getWeatherData(lat, lon, lang) {
+            // 检查缓存
+            const cachedData = WeatherCache.get(lat, lon);
+            if (cachedData) {
+                requestAnimationFrame(() => {
+                    showWeatherInfo(cachedData, 0, lang);
+                    generateOutfitRecommendations(cachedData, 0, lang);
+                });
+                return;
+            }
+            
+            try {
+                const weatherUrl = `${OPEN_METEO_API.WEATHER}/forecast?latitude=${lat}&longitude=${lon}`
+                    + `&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code,wind_speed_10m`
+                    + `&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max`
+                    + `&current_weather=true&timezone=auto&forecast_days=7`;
+
+                const response = await fetchWithRetry(weatherUrl);
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+                const data = await response.json();
+                if (!data || !data.current_weather || !data.daily || !data.hourly) {
+                    throw new Error('Invalid data structure');
+                }
+
+                const weatherData = processWeatherData(data, lang);
+                WeatherCache.set(lat, lon, weatherData);
+
+                requestAnimationFrame(() => {
+                    showWeatherInfo(weatherData, 0, lang);
+                    generateOutfitRecommendations(weatherData, 0, lang);
+                });
+
+                startAutoRefresh();
+        } catch (error) {
+                handleWeatherError(error, lang);
+            }
+        }
+
+        // 优化天气数据处理
+        function processWeatherData(data, lang) {
+            const currentHourIndex = new Date().getHours();
+            
+            // 确保所有数据都有默认值，特别注意风速数据的处理
+            const current = {
+                temp: data.current_weather?.temperature ?? '--',
+                feels_like: data.hourly?.temperature_2m?.[currentHourIndex] ?? '--',
+                humidity: data.hourly?.relative_humidity_2m?.[currentHourIndex] ?? '--',
+                wind_speed: data.current_weather?.windspeed ?? '--',  // 修改这里，使用 windspeed 而不是 wind_speed
+                weather_code: data.current_weather?.weathercode ?? 0,  // 使用 weathercode
+                last_update: new Date().toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US')
+            };
+
+            // 添加数据验证和默认值
+            return {
+                current,
+                daily: {
+                    temperature_2m_max: data.daily?.temperature_2m_max || Array(7).fill('--'),
+                    temperature_2m_min: data.daily?.temperature_2m_min || Array(7).fill('--'),
+                    weather_code: data.daily?.weathercode || Array(7).fill(0),  // 使用 weathercode
+                    precipitation_probability_max: data.daily?.precipitation_probability_max || Array(7).fill('--'),
+                    wind_speed_10m_max: data.daily?.wind_speed_10m_max || Array(7).fill('--')
+                },
+                hourly: {
+                    temperature: (data.hourly?.temperature_2m || Array(24).fill('--')).slice(0, 24),
+                    humidity: (data.hourly?.relative_humidity_2m || Array(24).fill('--')).slice(0, 24),
+                    precipitation_probability: (data.hourly?.precipitation_probability || Array(24).fill('--')).slice(0, 24),
+                    weather_code: (data.hourly?.weathercode || Array(24).fill(0)).slice(0, 24),  // 使用 weathercode
+                    wind_speed: (data.hourly?.windspeed_10m || Array(24).fill('--')).slice(0, 24)  // 使用 windspeed_10m
+                }
+            };
+        }
+
+        // 优化错误处理
+        function handleWeatherError(error, lang) {
+            console.error('Error fetching weather data:', error);
+            
+            let errorType = ErrorTypes.NETWORK;
+            let errorMessage = translations[lang].networkError;
+
+            if (error.message === 'Request timeout') {
+                errorType = ErrorTypes.TIMEOUT;
+                errorMessage = translations[lang].timeoutError || 'Request timed out. Please try again.';
+            } else if (error.message.includes('API Error')) {
+                errorType = ErrorTypes.API;
+                errorMessage = translations[lang].apiError || 'Weather service error. Please try again later.';
+            } else if (error.message === 'Invalid data structure') {
+                errorType = ErrorTypes.INVALID_DATA;
+                errorMessage = translations[lang].dataError || 'Invalid weather data received.';
+            }
+
+            showError(errorMessage, errorType);
+        }
+
+        // 错误类型定义
+        const ErrorTypes = {
+            NETWORK: 'network',
+            TIMEOUT: 'timeout',
+            API: 'api',
+            INVALID_DATA: 'invalid_data'
+        };
+
+        // 改进错误显示函数
+        function showError(message, type = ErrorTypes.NETWORK) {
+            const errorContainer = document.getElementById('error-container');
+            if (!errorContainer) return;
+
+            const errorClass = `error-${type}`;
+            errorContainer.className = `error-message ${errorClass}`;
+            errorContainer.textContent = message;
+            errorContainer.style.display = 'block';
+
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                errorContainer.style.display = 'none';
+            }, 5000);
+        }
+
+        // 添加超时控制的fetch函数
+        async function fetchWithTimeout(url, timeout = 10000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+            try {
+                const response = await fetch(url, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                return response;
+            } catch (error) {
+                clearTimeout(timeoutId);
+                if (error.name === 'AbortError') {
+                    throw new Error('Request timeout');
+                }
+                throw error;
+            }
+        }
+
+        function getWeatherEmoji(weather) {
+            const weatherMap = {
+                'clear': '☀️',
+                'clouds': '⛅',
+                'rain': '🌧',
+                'snow': '❄️',
+                'thunderstorm': '⛈',
+                'drizzle': '🌦',
+                'mist': '🌫',
+                'fog': '🌫'
+            };
+            return weatherMap[weather.toLowerCase()] || '🌤';
+        }
+
+        function formatDate(timestamp) {
+            const date = new Date(timestamp * 1000);
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
+        }
+
+        function getOutfitTip(temp, lang) {
+            const t = translations[lang].outfitTips;
+            if (temp < 10) return t.cold;
+            if (temp < 20) return t.mild;
+            return t.warm;
+        }
+
+        // 保存最近使用的城市
+        function saveRecentCity(city, lang) {
+            const recentCities = JSON.parse(localStorage.getItem('recentCities') || '{}');
+            recentCities[lang] = city;
+            localStorage.setItem('recentCities', JSON.stringify(recentCities));
+        }
+
+        // 初始化页面
+        function initializePage() {
+            // 渲染国家列表
+            renderCountryList(currentLang);
+        }
+
+        // 添加搜索过滤功能
+        function filterList(input, listId) {
+            const filter = input.value.toLowerCase();
+            const list = document.querySelector(`#${listId} .nav-items`);
+            const items = list.getElementsByClassName('nav-item');
+            
+            for (let item of items) {
+                const text = item.textContent || item.innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            }
+        }
+
+        // 更新渲染国家列表函数
+        function renderCountryList(lang) {
+            const countryList = document.getElementById('country-list');
+            if (!countryList) return;
+
+            const itemsContainer = countryList.querySelector('.nav-items');
+            if (!itemsContainer) return;
+
+            // 清除之前的事件监听
+            const newItemsContainer = itemsContainer.cloneNode(true);
+            itemsContainer.parentNode.replaceChild(newItemsContainer, itemsContainer);
+            
+            newItemsContainer.innerHTML = popularCountries[lang]
+                .map(country => `
+                    <div class="nav-item" data-code="${country.code}">
+                        ${country.name}
+                </div>
+                `).join('');
+
+            // 添加国家选择事件监听
+            newItemsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-item')) {
+                    selectCountry(e.target.dataset.code, e.target.textContent, lang);
+                }
+            });
+        }
+
+        // 更新选择国家函数
+        async function selectCountry(countryCode, countryName, lang) {
+            try {
+                currentSelection[lang].country = { code: countryCode, name: countryName };
+                
+                // 更新显示的值
+                const countryTitle = document.getElementById('country-title');
+                const selectedValue = countryTitle.querySelector('.selected-value') || document.createElement('div');
+                selectedValue.className = 'selected-value';
+                selectedValue.textContent = countryName;
+                if (!countryTitle.querySelector('.selected-value')) {
+                    countryTitle.appendChild(selectedValue);
+                }
+
+                // 隐藏国家列表
+                const countryList = document.getElementById('country-list');
+                countryList.classList.remove('show');
+                countryTitle.classList.remove('active');
+                
+                // 使用预设的热门城市数据
+                if (popularCities[countryCode]) {
+                    renderCityList(popularCities[countryCode][lang], lang);
+                    // 自动展开城市列表
+                    const cityList = document.getElementById('city-list');
+                    const cityTitle = document.getElementById('city-title');
+                    cityList.classList.add('show');
+                    cityTitle.classList.add('active');
+                } else {
+                    showError(translations[lang].cityNotFound);
+                }
+            } catch (error) {
+                console.error('Error loading cities:', error);
+                showError(translations[lang].networkError);
+            }
+        }
+
+        // 更新渲染城市列表函数
+        function renderCityList(cities, lang) {
+            const cityList = document.getElementById('city-list');
+            if (!cityList) return;
+
+            const itemsContainer = cityList.querySelector('.nav-items');
+            if (!itemsContainer) return;
+
+            // 清除之前的事件监听
+            const newItemsContainer = itemsContainer.cloneNode(true);
+            itemsContainer.parentNode.replaceChild(newItemsContainer, itemsContainer);
+            
+            newItemsContainer.innerHTML = cities
+                .map(city => `
+                    <div class="nav-item" data-lat="${city.latitude}" data-lon="${city.longitude}">
+                        ${city.name}
+                    </div>
+                `).join('');
+            
+            // 添加城市选择事件监听
+            newItemsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('nav-item')) {
+                    selectCity(e.target.dataset.lat, e.target.dataset.lon, e.target.textContent, lang);
+                }
+            });
+        }
+
+        // 更新选择城市函数
+        function selectCity(lat, lon, cityName, lang) {
+            currentSelection[lang].city = { lat, lon, name: cityName };
+            
+            // 更新显示的值
+            const cityTitle = document.getElementById('city-title');
+            const selectedValue = cityTitle.querySelector('.selected-value') || document.createElement('div');
+            selectedValue.className = 'selected-value';
+            selectedValue.textContent = cityName;
+            if (!cityTitle.querySelector('.selected-value')) {
+                cityTitle.appendChild(selectedValue);
+            }
+
+            // 隐藏城市列表
+            const cityList = document.getElementById('city-list');
+            cityList.classList.remove('show');
+            cityTitle.classList.remove('active');
+            
+            // 生成未来7天的日期列表
+            const dates = generateDateList(lang);
+            renderDateList(dates, lang);
+            
+            // 自动展开日期列表
+            const dateList = document.getElementById('date-list');
+            const dateTitle = document.getElementById('date-title');
+            dateList.classList.add('show');
+            dateTitle.classList.add('active');
+            
+            // 获取天气数据
+            getWeatherData(lat, lon, lang);
+        }
+
+        // 当前选择的日期状态
+        let currentDate = new Date();
+        let selectedDate = new Date();
+
+        // 生成日期列表改为生成日历
+        function generateDateList(lang) {
+            const today = new Date();
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            
+            // 获取这个月第一天是星期几（0-6）
+            const firstDayOfWeek = firstDay.getDay();
+            
+            // 计算日历网格需要显示的天数（包括上个月的最后几天）
+            const totalDays = firstDayOfWeek + lastDay.getDate();
+            const totalWeeks = Math.ceil(totalDays / 7);
+            
+            const weekDays = lang === 'zh' 
+                ? ['日', '一', '二', '三', '四', '五', '六']
+                : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            const monthNames = lang === 'zh'
+                ? ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            return {
+                weekDays,
+                monthName: monthNames[currentDate.getMonth()],
+                year: currentDate.getFullYear(),
+                totalWeeks,
+                firstDayOfWeek: firstDayOfWeek,
+                lastDate: lastDay.getDate(),
+                today: today,
+                selectedDate: selectedDate
+            };
+        }
+
+        // 渲染日历
+        function renderDateList(dates, lang) {
+            const dateList = document.getElementById('date-list');
+            if (!dateList) return;
+
+            const calendarData = generateDateList(lang);
+            
+            let html = `
+                <div class="calendar-wrapper">
+                    <div class="calendar-header">
+                        <div class="calendar-title">
+                            ${calendarData.monthName} ${calendarData.year}
+                        </div>
+                        <div class="calendar-nav">
+                            <button onclick="changeMonth(-1)">‹</button>
+                            <button onclick="changeMonth(1)">›</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid">
+            `;
+
+            // 添加星期标题
+            calendarData.weekDays.forEach(day => {
+                html += `<div class="calendar-weekday">${day}</div>`;
+            });
+
+            // 计算日期范围（未来7天）
+            const today = new Date();
+            const maxSelectableDate = new Date();
+            maxSelectableDate.setDate(today.getDate() + 6);
+
+            let currentDay = 1;
+            let currentWeek = 0;
+
+            while (currentWeek < calendarData.totalWeeks) {
+                for (let i = 0; i < 7; i++) {
+                    if ((currentWeek === 0 && i < calendarData.firstDayOfWeek) || 
+                        currentDay > calendarData.lastDate) {
+                        html += '<div class="calendar-day disabled"></div>';
+                    } else {
+                        const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDay);
+                        const isToday = date.toDateString() === today.toDateString();
+                        const isSelected = date.toDateString() === selectedDate.toDateString();
+                        const isInRange = date >= today && date <= maxSelectableDate;
+                        const hasWeather = isInRange;
+
+                        const classes = [
+                            'calendar-day',
+                            isToday ? 'today' : '',
+                            isSelected ? 'active' : '',
+                            hasWeather ? 'has-weather' : '',
+                            !isInRange ? 'disabled' : ''
+                        ].filter(Boolean).join(' ');
+
+                        html += `
+                            <div class="${classes}" 
+                                 onclick="${isInRange ? `selectDate(${date.getDate() - today.getDate()}, '${formatDate(date.getTime() / 1000)}', '${lang}')` : ''}"
+                            >${currentDay}</div>
+                        `;
+                        currentDay++;
+                    }
+                }
+                currentWeek++;
+            }
+
+            html += '</div></div>';
+            dateList.innerHTML = html;
+        }
+
+        // 切换月份
+        function changeMonth(delta) {
+            currentDate.setMonth(currentDate.getMonth() + delta);
+            renderDateList(null, currentLang);
+        }
+
+        // 修改选择日期函数
+        function selectDate(dateIndex, dateText, lang) {
+            // 更新选中的日期
+            selectedDate = new Date(Date.parse(dateText));
+            
+            // 更新显示
+            renderDateList(null, lang);
+            
+            const { city } = currentSelection[lang];
+            if (!city) return;
+            
+            // 使用已有的天气数据更新显示
+            const weatherContainer = document.getElementById('weather-info');
+            if (weatherContainer && weatherContainer._weatherData) {
+                const weatherData = weatherContainer._weatherData;
+                // 更新天气信息和穿搭建议
+                showWeatherInfo(weatherData, dateIndex, lang);
+                generateOutfitRecommendations(weatherData, dateIndex, lang);
+            } else {
+                // 如果没有缓存的天气数据，重新获取
+                getWeatherData(city.lat, city.lon, lang);
+            }
+        }
+
+        // 更新导航状态
+        function updateNavigation(lang) {
+            const selection = currentSelection[lang];
+            
+            // 更新选中状态
+            const countryList = document.getElementById('country-list');
+            const cityList = document.getElementById('city-list');
+            const dateList = document.getElementById('date-list');
+
+            if (countryList) {
+                countryList.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.code === selection.country?.code);
+                });
+            }
+            
+            if (cityList) {
+                cityList.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.textContent === selection.city?.name);
+                });
+            }
+            
+            if (dateList) {
+                dateList.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.index === selection.date?.index?.toString());
+                });
+            }
+        }
+
+        // 添加缓存管理
+        const WeatherCache = {
+            data: new Map(),
+            maxAge: 15 * 60 * 1000, // 15分钟缓存
+
+            getKey(lat, lon) {
+                return `${lat},${lon}`;
+            },
+
+            set(lat, lon, data) {
+                const key = this.getKey(lat, lon);
+                this.data.set(key, {
+                    timestamp: Date.now(),
+                    data: data
+                });
+            },
+
+            get(lat, lon) {
+                const key = this.getKey(lat, lon);
+                const cached = this.data.get(key);
+                
+                if (!cached) return null;
+                
+                // 检查缓存是否过期
+                if (Date.now() - cached.timestamp > this.maxAge) {
+                    this.data.delete(key);
+                    return null;
+                }
+                
+                return cached.data;
+            },
+
+            clear() {
+                this.data.clear();
+            }
+        };
+
+        // 优化显示天气信息函数
+        function showWeatherInfo(weatherData, dateIndex, lang) {
+            // 保存天气数据到容器中
+            const weatherContainer = document.getElementById('weather-info');
+            if (weatherContainer) {
+                weatherContainer._weatherData = weatherData;
+            }
+
+            // 更新当前天气显示
+            updateCurrentWeather(weatherData, lang);
+            
+            // 渲染天气预报卡片
+            renderForecastCards(weatherData, dateIndex, lang);
+            
+            // 生成穿搭建议
+            generateOutfitRecommendations(weatherData, dateIndex, lang);
+            
+            // 更新页面标题
+            updatePageTitle(weatherData, lang);
+        }
+
+        // 分离当前天气更新逻辑
+        function updateCurrentWeather(weatherData, lang) {
+            const currentWeatherContainer = document.getElementById('current-weather');
+            if (!currentWeatherContainer || !weatherData.current) return;
+
+            const { temp, feels_like, humidity, wind_speed, weather_code, last_update } = weatherData.current;
+            const weatherCondition = getWeatherCondition(weather_code);
+            
+            // 格式化天气数据，确保有默认值
+            const formattedTemp = temp !== undefined && temp !== null ? `${Math.round(temp)}°C` : '--°C';
+            const formattedWeather = translations[lang].weather[weatherCondition] || '--';
+            const formattedHumidity = humidity !== undefined && humidity !== null ? `${Math.round(humidity)}%` : '--%';
+            const formattedWindSpeed = wind_speed !== undefined && wind_speed !== null ? `${Math.round(wind_speed)} m/s` : '-- m/s';
+            const formattedLastUpdate = last_update || new Date().toLocaleTimeString(lang === 'zh' ? 'zh-CN' : 'en-US');
+            
+            currentWeatherContainer.innerHTML = `
+                <div class="current-temp">${formattedTemp}</div>
+                <div class="current-details">
+                    ${formattedWeather}
+                    <br>
+                    ${translations[lang].humidity || '湿度'}: ${formattedHumidity}
+                    <br>
+                    ${translations[lang].windSpeed || '风速'}: ${formattedWindSpeed}
+                    <br>
+                </div>
+                <div class="last-update">
+                    ${translations[lang].lastUpdate || '最后更新'}: ${formattedLastUpdate}
+            </div>
+        `;
+    }
+
+        // 优化天气预报卡片渲染
+        let currentCardIndex = 0;
+
+        function renderForecastCards(weatherData, selectedIndex, lang) {
+            const container = document.getElementById('forecast-container');
+            if (!container || !weatherData || !weatherData.daily) return;
+
+            // 创建导航按钮和滚动容器
+            container.innerHTML = `
+                <button class="nav-arrow prev" onclick="scrollForecast('prev')"></button>
+                <button class="nav-arrow next" onclick="scrollForecast('next')"></button>
+                <div class="forecast-scroll">
+                    ${Array.from({ length: 7 }, (_, i) => {
+                        const date = new Date();
+                        date.setDate(date.getDate() + i);
+                        
+                        // 确保数据存在并进行数值检查
+                        const dayTemp_max = weatherData.daily.temperature_2m_max[i] !== undefined ? Math.round(weatherData.daily.temperature_2m_max[i]) : '--';
+                        const dayTemp_min = weatherData.daily.temperature_2m_min[i] !== undefined ? Math.round(weatherData.daily.temperature_2m_min[i]) : '--';
+                        const dayWeather_code = weatherData.daily.weather_code[i] || 0;
+                        const dayPrecip_prob = weatherData.daily.precipitation_probability_max[i] !== undefined ? Math.round(weatherData.daily.precipitation_probability_max[i]) : '--';
+                        const dayWind_speed = weatherData.daily.wind_speed_10m_max[i] !== undefined ? Math.round(weatherData.daily.wind_speed_10m_max[i]) : '--';
+                        
+                        const isActive = i === selectedIndex;
+                        
+                        return `
+                            <div class="forecast-card${isActive ? ' active' : ''}" 
+                                onclick="selectDate(${i}, '${formatDate(date.getTime() / 1000)}', '${lang}')">
+                                <div class="forecast-date">${formatDate(date.getTime() / 1000)}</div>
+                                <div class="forecast-weather">
+                                    ${getWeatherEmoji(getWeatherCondition(dayWeather_code))}
+                                </div>
+                                <div class="forecast-temp">
+                                    ${Math.round(dayTemp_min)}° ~ ${Math.round(dayTemp_max)}°
+                                </div>
+                                <div class="forecast-details">
+                                    ${translations[lang].weather[getWeatherCondition(dayWeather_code)]}
+                                    <br>
+                                    💧 ${Math.round(dayPrecip_prob)}% | 💨 ${Math.round(dayWind_speed)}m/s
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+
+            // 更新导航按钮状态
+            updateNavArrows();
+
+            // 如果选中的日期不在可见范围内，滚动到相应位置
+            if (selectedIndex >= 4) {
+                currentCardIndex = selectedIndex - 3;
+                scrollToCurrentIndex();
+            }
+        }
+
+        function scrollForecast(direction) {
+            const maxIndex = 3; // 可滚动的最大索引值，确保最后一张卡片可见
+            
+            if (direction === 'prev') {
+                currentCardIndex = Math.max(0, currentCardIndex - 1);
+            } else {
+                currentCardIndex = Math.min(maxIndex, currentCardIndex + 1);
+            }
+            
+            scrollToCurrentIndex();
+            updateNavArrows();
+        }
+
+        function scrollToCurrentIndex() {
+            const scrollContainer = document.querySelector('.forecast-scroll');
+            if (scrollContainer) {
+                const scrollPercentage = (currentCardIndex * 25); // 每次滚动25%
+                scrollContainer.style.transform = `translateX(-${scrollPercentage}%)`;
+            }
+        }
+
+        function updateNavArrows() {
+            const prevButton = document.querySelector('.nav-arrow.prev');
+            const nextButton = document.querySelector('.nav-arrow.next');
+            
+            if (prevButton) {
+                prevButton.classList.toggle('disabled', currentCardIndex === 0);
+            }
+            
+            if (nextButton) {
+                nextButton.classList.toggle('disabled', currentCardIndex === 3);
+            }
+        }
+
+        // 分离页面标题更新逻辑
+        function updatePageTitle(weatherData, lang) {
+            const cityName = currentSelection[lang].city.name;
+            document.title = `${cityName} ${Math.round(weatherData.current.temp)}°C | ${lang === 'zh' ? '旅行穿搭助手' : 'Travel Outfit Advisor'}`;
+        }
+
+        // 生成穿搭建议
+        function generateOutfit(temp, weather, lang) {
+            const t = translations[lang].outfits;
+            let outfit = '';
+
+            // 基于温度的基础穿搭建议
+        if (temp < 10) {
+                outfit = t.cold;
+        } else if (temp < 20) {
+                outfit = t.mild;
+        } else {
+                outfit = t.warm;
+            }
+
+            // 根据天气状况添加额外建议
+            if (weather === 'rain' || weather === 'drizzle' || weather === 'thunderstorm') {
+                outfit += t.rainTip;
+            } else if (weather === 'snow') {
+                outfit += t.snowTip;
+        }
+
+        return outfit;
+    }
+
+        // 生成穿搭建议
+        function generateOutfitRecommendations(weatherData, dateIndex, lang) {
+            const container = document.getElementById('outfit-recommendations');
+            if (!container || !weatherData || !weatherData.daily) return;
+
+            // 获取天气数据
+            const temp = (weatherData.daily.temperature_2m_max[dateIndex] + weatherData.daily.temperature_2m_min[dateIndex]) / 2;
+            const weather_code = weatherData.daily.weather_code[dateIndex];
+            const weather = getWeatherCondition(weather_code);
+            
+            // 生成三种不同人群的穿搭建议
+            const outfits = {
+                women: generateOutfit(temp, weather, lang),
+                men: generateOutfit(temp, weather, lang),
+                kids: generateOutfit(temp, weather, lang)
+            };
+
+            // 使用新的布局结构，但保持原有的数据生成逻辑
+            const html = `
+                <div class="outfit-card">
+                    <h3>${lang === 'zh' ? '👩 女士穿搭' : '👩 Women\'s Outfit'}</h3>
+                    <div class="weather-icon">🌡️ ${temp.toFixed(1)}°C</div>
+                    <div class="outfit-content">${outfits.women}</div>
+                </div>
+                <div class="outfit-card">
+                    <h3>${lang === 'zh' ? '👨 男士穿搭' : '👨 Men\'s Outfit'}</h3>
+                    <div class="weather-icon">🌡️ ${temp.toFixed(1)}°C</div>
+                    <div class="outfit-content">${outfits.men}</div>
+                </div>
+                <div class="outfit-card">
+                    <h3>${lang === 'zh' ? '👶 儿童穿搭' : '👶 Kids\' Outfit'}</h3>
+                    <div class="weather-icon">🌡️ ${temp.toFixed(1)}°C</div>
+                    <div class="outfit-content">${outfits.kids}</div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // 更新天气代码转换函数
+        function getWeatherCondition(code) {
+            // WMO Weather interpretation codes (WW)
+            if (code === 0) return 'clear';
+            if (code >= 1 && code <= 3) return 'clouds';
+            if (code >= 45 && code <= 48) return 'fog';
+            if (code >= 51 && code <= 55) return 'drizzle';
+            if (code >= 56 && code <= 57) return 'drizzle';
+            if (code >= 61 && code <= 65) return 'rain';
+            if (code >= 66 && code <= 67) return 'rain';
+            if (code >= 71 && code <= 77) return 'snow';
+            if (code >= 80 && code <= 82) return 'rain';
+            if (code >= 85 && code <= 86) return 'snow';
+            if (code >= 95 && code <= 99) return 'thunderstorm';
+            return 'clear';
+        }
+
+        // 添加语言切换函数
+        function toggleLanguageList() {
+            const btn = document.querySelector('.language-btn');
+            const list = document.getElementById('languageList');
+            const isShow = list.classList.contains('show');
+            
+            // 切换按钮和列表的状态
+            btn.classList.toggle('active');
+            list.classList.toggle('show');
+
+            // 点击外部关闭列表
+            if (!isShow) {
+                document.addEventListener('click', closeLanguageList);
+            }
+        }
+
+        function closeLanguageList(e) {
+            if (!e.target.closest('.language-switch')) {
+                const btn = document.querySelector('.language-btn');
+                const list = document.getElementById('languageList');
+                btn.classList.remove('active');
+                list.classList.remove('show');
+                document.removeEventListener('click', closeLanguageList);
+            }
+        }
+
+        function switchLanguage(lang) {
+            const currentLangSpan = document.querySelector('.current-lang');
+            const options = document.querySelectorAll('.language-option');
+            const langNames = {
+                'en': 'English',
+                'zh': '简体中文',
+                'zh-TW': '繁體中文',
+                'ja': '日本語',
+                'ko': '한국어',
+                'de': 'Deutsch',
+                'fr': 'Français',
+                'it': 'Italiano',
+                'es': 'Español',
+                'pt': 'Português',
+                'hi': 'हिंदी'
+            };
+
+            // 更新当前语言显示
+            currentLangSpan.textContent = langNames[lang];
+
+            // 更新选中状态
+            options.forEach(option => {
+                option.classList.toggle('selected', option.textContent === langNames[lang]);
+            });
+
+            // 关闭语言列表
+            toggleLanguageList();
+
+            // 保存语言设置并更新界面
+            localStorage.setItem('preferred_language', lang);
+            currentLang = lang;
+            
+            // 更新界面文本
+            updateInterfaceText(lang);
+
+            // 如果已经选择了城市，重新获取天气数据
+            const currentCity = currentSelection[lang]?.city;
+            if (currentCity) {
+                getWeatherData(currentCity.lat, currentCity.lon, lang);
+            }
+        }
+
+        function updateSelectedDateWeather(selectedDate) {
+            const container = document.querySelector('.current-weather');
+            if (!container || !weatherData) return;
+
+            // 获取选中日期的索引
+            const dateStr = selectedDate.toISOString().split('T')[0];
+            const dailyIndex = weatherData.daily.time.findIndex(time => time === dateStr);
+            
+            if (dailyIndex === -1) return;
+
+            // 获取该日期的小时数据起始索引（每天24小时）
+            const hourlyStartIndex = dailyIndex * 24;
+            const currentHour = new Date().getHours();
+            const hourlyIndex = hourlyStartIndex + currentHour;
+
+            // 更新天气数据
+            const weatherInfo = {
+                temp: Math.round((weatherData.daily.temperature_2m_max[dailyIndex] + weatherData.daily.temperature_2m_min[dailyIndex]) / 2),
+                max_temp: Math.round(weatherData.daily.temperature_2m_max[dailyIndex]),
+                min_temp: Math.round(weatherData.daily.temperature_2m_min[dailyIndex]),
+                humidity: weatherData.hourly.relative_humidity_2m[hourlyIndex] ?? '--',
+                wind_speed: weatherData.daily.wind_speed_10m_max[dailyIndex] ?? '--',
+                weather_code: weatherData.daily.weather_code[dailyIndex],
+                last_update: selectedDate.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US')
+            };
+
+            // 更新 DOM
+            container.innerHTML = `
+                <div class="temperature">${weatherInfo.temp}°C</div>
+                <div class="weather-condition">${getWeatherDescription(weatherInfo.weather_code, lang)}</div>
+                <div class="weather-range">${weatherInfo.min_temp}° ~ ${weatherInfo.max_temp}°</div>
+                <div class="humidity">Humidity: ${weatherInfo.humidity}%</div>
+                <div class="wind-speed">Wind Speed: ${weatherInfo.wind_speed} m/s</div>
+                <div class="last-update">Date: ${weatherInfo.last_update}</div>
+            `;
+        }
+
+        // 修改日期点击事件处理函数
+        function handleDateClick(event) {
+            const dateElement = event.target.closest('.date');
+            if (!dateElement) return;
+
+            // 移除之前的选中状态
+            document.querySelectorAll('.date.selected').forEach(el => el.classList.remove('selected'));
+            
+            // 添加新的选中状态
+            dateElement.classList.add('selected');
+            
+            // 获取选中的日期
+            const selectedDate = new Date(dateElement.dataset.date);
+            
+            // 更新天气显示
+            updateSelectedDateWeather(selectedDate);
+            
+            // 更新天气预报卡片
+            renderForecastCards(selectedDate);
+        }
+
+        // 修改初始化函数
+        async function initWeatherApp() {
+            // ... existing code ...
+            
+            // 初始化时使用当前日期
+            const today = new Date();
+            updateSelectedDateWeather(today);
+            
+            // 添加日期点击事件监听
+            const dateContainer = document.querySelector('.date-list');
+            if (dateContainer) {
+                dateContainer.addEventListener('click', handleDateClick);
+            }
+            
+            // ... existing code ...
+        }
+
+        // 使用 MutationObserver 替代废弃的 DOM 事件
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // 元素节点
+                            initializeNewElements(node);
+                        }
+                    });
+                }
+            });
+        });
+
+        // 初始化新添加的元素
+        function initializeNewElements(element) {
+            // 为新添加的日期元素添加事件监听
+            const dateElements = element.querySelectorAll('.date');
+            dateElements.forEach(dateEl => {
+                if (!dateEl.dataset.initialized) {
+                    dateEl.dataset.initialized = 'true';
+                    dateEl.addEventListener('click', handleDateClick);
+                }
+            });
+
+            // 为新添加的天气卡片添加事件监听
+            const forecastCards = element.querySelectorAll('.forecast-card');
+            forecastCards.forEach(card => {
+                if (!card.dataset.initialized) {
+                    card.dataset.initialized = 'true';
+                    card.addEventListener('click', handleForecastCardClick);
+                }
+            });
+        }
+
+        // 在页面加载完成后启动观察器
+        document.addEventListener('DOMContentLoaded', () => {
+            // 配置观察器
+            const config = {
+                childList: true,
+                subtree: true
+            };
+
+            // 开始观察文档变化
+            observer.observe(document.body, config);
+
+            // 初始化现有元素
+            initializeNewElements(document.body);
+        });
+
+        // 更新标题文本
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... existing code ...
+            
+            // 更新中文标题
+            const translations = {
+                zh: {
+                    title: '最好的天气穿衣指南',
+                    // ... other translations ...
+                },
+                en: {
+                    title: 'Best Weather Dress Guide',
+                    // ... other translations ...
+                }
+            };
+            
+            // ... rest of the code ...
+        });
+
+        // 添加简单的滚动动画JavaScript
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.testimonials-container');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                container.style.cursor = 'grabbing';
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2;
+                container.scrollLeft = scrollLeft - walk;
+            });
+        });
+    </script>
 </body>
 </html>
